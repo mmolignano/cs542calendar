@@ -35,6 +35,13 @@ public class Event {
 	@Persistent
 	String description;
 
+	public Event() {
+		eventName="Default Event";
+		eventDate = new Date();
+		location="Default Location";
+		description="Default Description";
+	}
+	
 	public Event(String eventName, Date eventDate, String location, String description) {
 		this.eventName = eventName;
 		this.eventDate = eventDate;

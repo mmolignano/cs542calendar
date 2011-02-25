@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class AddEventServlet extends HttpServlet {
 	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
 		Event ev = new Event();
 		

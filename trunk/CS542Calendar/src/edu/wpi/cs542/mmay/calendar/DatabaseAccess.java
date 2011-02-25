@@ -46,6 +46,33 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	public static boolean addCalendar(Calendar cal) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		
+		
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+//			tx.begin();
+	
+			pm.makePersistent(cal);
+			//datastore.put(ev);
+	
+//			tx.commit();
+		}finally	{
+//			if (tx.isActive()){
+//				tx.rollback();
+//				returner = false;
+//			}
+		}
+		
+		pm.close();
+
+		return returner;
+	}
+	
 	public static ArrayList<Event> getEvents(){
 		ArrayList<Event> returner = new ArrayList<Event>();
 		

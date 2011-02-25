@@ -21,13 +21,19 @@ public class Event {
 	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	Key id; //PRIMARY KEY ('id') 'id' varchar(255) NOT NULL
+	Key id;
 	
 	@Persistent
 	String eventName;	
 	
 	@Persistent
-	Date eventDate;
+	Date startDate;
+	
+	/*@Persistent
+	Date endDate;
+	
+	@Persistent
+	int duration; // in minutes*/
 	
 	@Persistent
 	String location;
@@ -37,18 +43,21 @@ public class Event {
 
 	public Event() {
 		eventName="Default Event";
-		eventDate = java.util.Calendar.getInstance().getTime();
+		startDate = java.util.Calendar.getInstance().getTime();
+		//endDate = java.util.Calendar.getInstance().getTime();
 		location="Default Location";
 		description="Default Description";
 	}
 	
-	public Event(String eventName, Date eventDate, String location, String description) {
+	//public Event(String eventName, Date startDate, Date endDate, String location, String description) {
+	public Event(String eventName, Date startDate, String location, String description) {
 		this.eventName = eventName;
-		this.eventDate = eventDate;
+		this.startDate = startDate;
+		//this.endDate = endDate;
 		this.location = location;
 		this.description = description;
 	}
-	
+
 	public Key getId() {
 		return id;
 	}
@@ -65,12 +74,12 @@ public class Event {
 		this.eventName = eventName;
 	}
 
-	public Date getEventDate() {
-		return eventDate;
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setEventDate(Date eventDate) {
-		this.eventDate = eventDate;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	public String getLocation() {
@@ -87,6 +96,7 @@ public class Event {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}	
+	}
+	
 	
 }

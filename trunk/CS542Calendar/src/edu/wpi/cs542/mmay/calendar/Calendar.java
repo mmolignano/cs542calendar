@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.Key;
 
 /**
  * 
- * @author Andrew
+ * @author Andrew Yee
  *
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)

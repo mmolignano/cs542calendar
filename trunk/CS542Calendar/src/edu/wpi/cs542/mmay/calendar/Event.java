@@ -37,7 +37,7 @@ public class Event {
 
 	public Event() {
 		eventName="Default Event";
-		eventDate = new Date();
+		eventDate = java.util.Calendar.getInstance().getTime();
 		location="Default Location";
 		description="Default Description";
 	}

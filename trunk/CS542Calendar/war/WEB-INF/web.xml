@@ -8,9 +8,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>CS542Calendar</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.CS542CalendarServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ShowCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.ShowCalendarServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>CS542Calendar</servlet-name>
 		<url-pattern>/cs542calendar</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ShowCalendar</servlet-name>
+		<url-pattern>/showcalendarr</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

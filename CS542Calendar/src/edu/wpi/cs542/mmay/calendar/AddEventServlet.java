@@ -1,0 +1,27 @@
+package edu.wpi.cs542.mmay.calendar;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class AddEventServlet extends HttpServlet {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		
+		//Event ev = new Event("event 1", new Date(2012, 1, 1, 0, 0), "world", "end of the world");
+		
+		ArrayList<Event> events = DatabaseAccess.getEvents();
+		resp.setContentType("text/plain");
+		
+		// Print Headers
+		resp.getWriter().println("NAME (" + (events.size()) + " events)\n");
+		
+		for (Event e1 : events) {
+			resp.getWriter().println(e1.getEventName());
+		}
+	}
+}

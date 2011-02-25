@@ -40,6 +40,7 @@ public class Event {
 	
 	@Persistent
 	String description;
+	
 
 	public Event() {
 		eventName="Default Event";
@@ -98,5 +99,12 @@ public class Event {
 		this.description = description;
 	}
 	
-	
+	public boolean equals(Object o) {
+		if(this.getClass().equals(o.getClass())) {
+			if (this.id.equals(((Event)o).getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

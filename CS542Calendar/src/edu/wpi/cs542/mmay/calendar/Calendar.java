@@ -32,6 +32,12 @@ public class Calendar {
 	@Persistent
 	List<Event> events;
 	
+	public Calendar() {
+		this.name = "";
+		this.owner = "";
+		events = new LinkedList<Event>();
+	}
+	
 	public Calendar(String name, String owner) {
 		this.name = name;
 		this.owner = owner;

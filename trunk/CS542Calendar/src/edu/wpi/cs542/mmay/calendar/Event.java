@@ -5,6 +5,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.Date;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -23,7 +24,15 @@ public class Event {
 	Key id; //PRIMARY KEY ('id') 'id' varchar(255) NOT NULL
 	
 	@Persistent
-	String something;
+	String eventName;
 	
+	@Persistent
+	Date eventDate;
+	
+	@Persistent
+	String location;
+	
+	@Persistent
+	String description;	
 	
 }

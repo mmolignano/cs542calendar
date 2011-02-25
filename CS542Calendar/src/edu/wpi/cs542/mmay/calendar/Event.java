@@ -33,6 +33,53 @@ public class Event {
 	String location;
 	
 	@Persistent
-	String description;	
+	String description;
+
+	public Event(String eventName, Date eventDate, String location, String description) {
+		this.eventName = eventName;
+		this.eventDate = eventDate;
+		this.location = location;
+		this.description = description;
+	}
+	
+	public Key getId() {
+		return id;
+	}
+
+	public void setId(Key id) {
+		this.id = id;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public Date getEventDate() {
+		return eventDate;
+	}
+
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}	
 	
 }

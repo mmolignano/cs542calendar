@@ -16,7 +16,7 @@ public class AddEventServlet extends HttpServlet {
 		Event ev = new Event();
 		
 		ev.setEventName(req.getParameter("name"));
-//		ev.setStartDate(new Date(req.getParameter("startD")));
+		//ev.setStartDate(new Date(req.getParameter("startD")));
 		ev.setLocation(req.getParameter("loc"));
 		ev.setDescription(req.getParameter("desc"));
 		
@@ -27,7 +27,7 @@ public class AddEventServlet extends HttpServlet {
 		if (success) {
 			resp.getWriter().println("Added Event:\n");
 			resp.getWriter().println(ev.getEventName());
-			resp.getWriter().println(req.getParameter("startD"));
+			resp.getWriter().println(ev.getStartDate());
 			resp.getWriter().println(req.getParameter("endD"));
 			resp.getWriter().println(req.getParameter("startT"));
 			resp.getWriter().println(req.getParameter("endT"));

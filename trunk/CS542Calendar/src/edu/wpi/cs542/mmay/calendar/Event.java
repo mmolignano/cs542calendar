@@ -24,7 +24,7 @@ public class Event {
 	Key id; //PRIMARY KEY ('id') 'id' varchar(255) NOT NULL
 	
 	@Persistent
-	String eventName;
+	String eventName;	
 	
 	@Persistent
 	Date eventDate;

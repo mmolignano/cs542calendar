@@ -22,7 +22,7 @@ public class ShowCalendarServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		
 		// Print Headers
-		resp.getWriter().println("NAME\n");
+		resp.getWriter().println("NAME\n (" + (events.size()) + " events)");
 		
 		for (Event e1 : events) {
 			resp.getWriter().println(e1.getEventName());

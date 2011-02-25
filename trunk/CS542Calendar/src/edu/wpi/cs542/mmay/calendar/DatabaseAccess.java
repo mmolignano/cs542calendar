@@ -1,5 +1,8 @@
 package edu.wpi.cs542.mmay.calendar;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Transaction;
+
 /**
  * 
  *
@@ -9,9 +12,29 @@ package edu.wpi.cs542.mmay.calendar;
  */
 public class DatabaseAccess {
 	
-	public static boolean addEvent() {
+	public static boolean addEvent(Event ev) {
+		boolean returner = true;
 		
-		return false;
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+	
+			pm.makePersistent(ev);
+	
+			tx.commit();
+		}finally	{
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+		}
+		
+		pm.close();
+
+		return returner;
 	}
 
 }

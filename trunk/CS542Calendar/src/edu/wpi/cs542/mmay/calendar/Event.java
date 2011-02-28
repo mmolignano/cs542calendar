@@ -10,7 +10,7 @@ import java.util.Date;
 import com.google.appengine.api.datastore.Key;
 
 /**
- * Entity representing a calendar event
+ * Kind/Entity representing a calendar event
  * 
  * @author Andrew Yee
  * @author Mike Molignano

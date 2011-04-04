@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
+
 @SuppressWarnings("serial")
 public class AddEventServlet extends HttpServlet {
 	

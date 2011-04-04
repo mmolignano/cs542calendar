@@ -11,6 +11,9 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
+
 /**
  * 
  *

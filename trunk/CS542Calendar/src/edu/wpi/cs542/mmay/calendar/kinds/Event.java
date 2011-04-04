@@ -1,4 +1,4 @@
-package edu.wpi.cs542.mmay.calendar;
+package edu.wpi.cs542.mmay.calendar.kinds;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

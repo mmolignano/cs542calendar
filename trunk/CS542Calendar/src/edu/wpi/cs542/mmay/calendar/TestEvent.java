@@ -2,6 +2,8 @@ package edu.wpi.cs542.mmay.calendar;
 
 import java.util.Date;
 
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
+
 public class TestEvent {
 
 	/**

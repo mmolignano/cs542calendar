@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.servlet.http.*;
 
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
+
 @SuppressWarnings("serial")
 public class CS542CalendarServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)

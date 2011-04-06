@@ -76,4 +76,8 @@ public class Calendar {
 		events.remove(event);
 	}
 	
+	public List<Event> getEvents() {
+		return events;
+	}
+	
 }

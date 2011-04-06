@@ -48,4 +48,8 @@ public class PendingEvent {
 			}
 		}
 	}
+	
+	public List<Event> getPendingEvents() {
+		return pendingEvents;
+	}
 }

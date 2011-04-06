@@ -52,4 +52,8 @@ public class Ownership {
 			}
 		}
 	}
+	
+	public List<Calendar> getCalendars() {
+		return ownedCalendars;
+	}
 }

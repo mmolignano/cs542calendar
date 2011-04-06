@@ -1,0 +1,4 @@
+Probably need to fix:
+
+PendingCalendar+PendingEvent+Ownership -- fold into one?
+Also need to fix User - don't think can use that as PK

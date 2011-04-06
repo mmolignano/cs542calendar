@@ -48,4 +48,9 @@ public class PendingCalendar {
 			}
 		}
 	}
+	
+	public List<Calendar> getPendingCalendars() {
+		return pendingCalendars;
+	}
+	
 }

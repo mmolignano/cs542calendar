@@ -11,8 +11,10 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
-import edu.wpi.cs542.mmay.calendar.kinds.Event;
+import com.google.appengine.api.users.User;
+
+import edu.wpi.cs542.mmay.calendar.kinds.*;
+
 
 /**
  * 
@@ -110,11 +112,31 @@ public class DatabaseAccess {
 	
 	public static Collection<Event> fetchAllEventsByDate() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Collection<Event> returner = new LinkedList<Event>();
+		//Collection<Event> returner = new LinkedList<Event>();
 		Query query = pm.newQuery(pm.getExtent(Event.class));
 		query.setOrdering("startDate asc");
-		returner = (Collection<Event>)(query.execute());
+		Collection<Event> returner = (Collection<Event>)(query.execute());
+		//return returner;
+		pm.close();
 		return returner;
+	}
+	
+	public static List<Event> getEventsFromCalendar(Calendar calendar) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		//Query query = pm.newQuery(pm.getExtent(Calendar.class));
+		//query.setFilter("id == idParam");
+		//query.declareParameters(" idParam)
+		Calendar cal = pm.getObjectById(Calendar.class, calendar.getId());
+		pm.close();
+		return cal.getEvents();
+		
+	}
+	
+	public static List<Event> getPendingEventsForUser(Ownership account) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		PendingEvent pendEvent = pm.getObjectById(PendingEvent.class, account.getAccount());
+		pm.close();
+		return pendEvent.getPendingEvents();
 	}
 
 }

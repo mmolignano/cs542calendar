@@ -113,7 +113,7 @@ public class DatabaseAccess {
 		Collection<Event> returner = new LinkedList<Event>();
 		Query query = pm.newQuery(pm.getExtent(Event.class));
 		query.setOrdering("startDate asc");
-		returner = (Collection<Event>) query.execute();
+		returner = (Collection<Event>)(query.execute());
 		return returner;
 	}
 

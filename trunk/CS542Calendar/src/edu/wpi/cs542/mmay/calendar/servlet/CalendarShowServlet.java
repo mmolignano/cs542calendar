@@ -1,4 +1,4 @@
-package edu.wpi.cs542.mmay.calendar;
+package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Event;
 
 @SuppressWarnings("serial")
-public class ShowCalendarServlet extends HttpServlet {
+public class CalendarShowServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		

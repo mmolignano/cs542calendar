@@ -1,13 +1,14 @@
-package edu.wpi.cs542.mmay.calendar;
+package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
 
 import javax.servlet.http.*;
 
+import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Event;
 
 @SuppressWarnings("serial")
-public class CS542CalendarServlet extends HttpServlet {
+public class DummyServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		

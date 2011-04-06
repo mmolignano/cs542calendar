@@ -1,4 +1,4 @@
-package edu.wpi.cs542.mmay.calendar;
+package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
 
@@ -6,9 +6,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
 
-public class AddCalendarServlet extends HttpServlet {
+public class CalendarAddServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 

@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>CS542Calendar</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.CS542CalendarServlet</servlet-class>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.DummyServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CS542Calendar</servlet-name>
@@ -14,7 +14,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ShowCalendar</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.ShowCalendarServlet</servlet-class>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarShowServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ShowCalendar</servlet-name>
@@ -22,7 +22,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>AddEvent</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.AddEventServlet</servlet-class>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventAddServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddEvent</servlet-name>
@@ -30,7 +30,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>AddCalendar</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.AddCalendarServlet</servlet-class>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarAddServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddCalendar</servlet-name>

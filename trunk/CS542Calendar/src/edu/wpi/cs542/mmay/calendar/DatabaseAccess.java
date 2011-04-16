@@ -1,6 +1,7 @@
 package edu.wpi.cs542.mmay.calendar;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,6 +11,7 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+import javax.jdo.*;
 
 import com.google.appengine.api.users.User;
 

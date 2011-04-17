@@ -1,13 +1,13 @@
 package edu.wpi.cs542.mmay.calendar.kinds;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.User;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.Date;
-
-import com.google.appengine.api.datastore.Key;
 
 /**
  * Kind/Entity representing a calendar event
@@ -16,54 +16,40 @@ import com.google.appengine.api.datastore.Key;
  * @author Mike Molignano
  *
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class Event {
-	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	Key id;
+	private Key id;
 	
 	@Persistent
-	String eventName;	
+	private String eventName;	
 	
 	@Persistent
-	Date startDate;
-	
-	/*@Persistent
-	Date endDate;
+	private Date startDate;
 	
 	@Persistent
-	int duration; // in minutes*/
+	private String location;
 	
 	@Persistent
-	String location;
-	
-	@Persistent
-	String description;
+	private String description;
 	
 	public Event() {
 		eventName="Default Event";
-		startDate = java.util.Calendar.getInstance().getTime();
-		//endDate = java.util.Calendar.getInstance().getTime();
+		startDate = new Date();
 		location="Default Location";
 		description="Default Description";
 	}
 	
-	//public Event(String eventName, Date startDate, Date endDate, String location, String description) {
 	public Event(String eventName, Date startDate, String location, String description) {
 		this.eventName = eventName;
 		this.startDate = startDate;
-		//this.endDate = endDate;
 		this.location = location;
 		this.description = description;
 	}
 
 	public Key getId() {
 		return id;
-	}
-
-	public void setId(Key id) {
-		this.id = id;
 	}
 
 	public String getEventName() {

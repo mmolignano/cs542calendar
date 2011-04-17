@@ -24,19 +24,16 @@
         		<td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
       		</tr>
       		<tr>
-        		<td><a href="listCalendar">List Calendars</a></td>
-      		</tr>
-      		<tr>
         		<td><a href="showcalendar">Show My Calendar</a></td>
       		</tr>
       		<tr>
-        		<td><a href="newEvent.html">Add Event</a></td>
-      		</tr>
-      		<tr>
-        		<td><a href="newEvent.jsp">Add Event with Picker</a></td>
+        		<td><a href="newEvent.jsp">Add Event</a></td>
       		</tr>
       		<tr>
         		<td><a href="addCalendar.jsp">Add Calendar</a></td>
+      		</tr>
+      		<tr>
+        		<td><a href="listCalendar">List Calendars</a></td>
       		</tr>
     	</table>
 <%

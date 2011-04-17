@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.Key;
 
 /**
  * 
- * @author Andrew Yee
+ * @author Andrew Yee, Mike Molignano
  *
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -21,16 +21,19 @@ public class Calendar {
 	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	Key id;
+	private Key id;
 	
 	@Persistent
-	String name;
+	private String name;
 	
 	@Persistent
-	String owner;
+	private String owner;
 	
 	@Persistent
-	List<Event> events;
+	private String description;
+	
+	@Persistent
+	private List<Event> events;
 	
 	public Calendar() {
 		this.name = "";
@@ -66,6 +69,14 @@ public class Calendar {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void addEvent(Event event) {

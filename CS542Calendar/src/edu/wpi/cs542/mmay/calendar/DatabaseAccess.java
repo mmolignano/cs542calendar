@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jdo.*;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.User;
 
 import edu.wpi.cs542.mmay.calendar.kinds.*;
 
@@ -45,6 +46,29 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	public static boolean addEventToCalendar(Event ev, Key key) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		System.out.println("wtf");
+		
+		try {	
+			tx.begin();
+			pm.makePersistent(ev);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
+	
 	public static boolean removeEvent(Event ev) {
 		return false;
 	}
@@ -53,21 +77,22 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-//		Transaction tx = pm.currentTransaction();
+		Transaction tx = pm.currentTransaction();
 		
 		try {	
-//			tx.begin();
+			tx.begin();
 			pm.makePersistent(cal);
-//			tx.commit();
-		}finally	{
-//			if (tx.isActive()){
-//				tx.rollback();
-//				returner = false;
-//			}
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()) {
+				// Error occurred so rollback the transaction
+		        tx.rollback();
+		        returner = false;
+			}
+			pm.close();
 		}
 		
-		pm.close();
-
 		return returner;
 	}
 	
@@ -134,6 +159,20 @@ public class DatabaseAccess {
 		}
 		pm.close();
 		return returner;
+	}
+	
+	public static Collection<Calendar> getCalendarsByUser(User user) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Collection<Calendar> myCalendars = new ArrayList<Calendar>();
+		Collection<Calendar> calendars = fetchAllCalendars();
+		
+		for (Calendar c : calendars) {
+			if (c.getOwners().contains(user)) {
+				myCalendars.add(c);
+			}
+		}
+		
+		return myCalendars;
 	}
 	
 	public static List<Event> getEventsByDate(){

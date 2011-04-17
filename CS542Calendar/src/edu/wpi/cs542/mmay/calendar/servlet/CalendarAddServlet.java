@@ -12,7 +12,6 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
-import edu.wpi.cs542.mmay.calendar.PMF;
 
 public class CalendarAddServlet extends HttpServlet {
 
@@ -30,23 +29,26 @@ public class CalendarAddServlet extends HttpServlet {
 		//Event ev = new Event();
 		Calendar calendar = new Calendar();
 		
-//		calendar.setName(req.getParameter("name"));
-//		calendar.setOwner(user.getNickname());
+		calendar.setName(req.getParameter("name"));
+		calendar.setOwner(user.getNickname());
+		calendar.setDescription(req.getParameter("desc"));
 		
+		boolean success = DatabaseAccess.addCalendar(calendar);
 		
+		// TODO : Redirects to index so need a way to print success or failure
 		
-//		//boolean success = DatabaseAccess.addEvent(ev); 
-//		boolean success = DatabaseAccess.addCalendar(calendar);
-//		
-//		resp.setContentType("text/plain");
-//		
-//		if (success) {
-//			resp.getWriter().println("Added Calendar:\n");
-//			resp.getWriter().println("Calendar Name: " + calendar.getName());
-//			resp.getWriter().println("Calendar Owner: " + calendar.getOwner());
-//			
-//		} else {
-//			resp.getWriter().println("Add Unsuccessful");
-//		}
+		resp.setContentType("text/plain");
+		
+		if (success) {
+			resp.getWriter().println("Added Calendar:\n");
+			resp.getWriter().println("Calendar Name: " + calendar.getName());
+			resp.getWriter().println("Calendar Owner: " + calendar.getOwner());
+			resp.getWriter().println("Calendar Description: " + calendar.getDescription());
+			
+		} else {
+			resp.getWriter().println("Add Unsuccessful");
+		}
+		
+		resp.sendRedirect("/index.jsp");
 	}
 }

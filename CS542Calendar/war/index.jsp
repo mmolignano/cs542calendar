@@ -14,7 +14,7 @@
     	User user = userService.getCurrentUser();
     	if (user != null) {
 %>
-		<p><%= user.getNickname() %>! (You can
+		<p><%= user.getNickname() %> (You can
 		<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 		
 		<h1>Hello App Engine!</h1>

@@ -22,8 +22,10 @@
     		<h1>Add New Calendar</h1>
     
     		<form name="input" action="/addcalendar" method="post">
-				<b>Name:</b> <input type="text" name="name" /><br />
-				<b>Description:</b> <textarea name="desc" rows="3" cols="60"></textarea><br />
+    			<table>
+    				<tr><td><b>Name:</b></td><td> <input type="text" name="name" /></td></tr>
+    				<tr><td><b>Description:</b></td><td> <textarea name="desc" rows="3" cols="60"></textarea></td></tr>
+				</table>
 				<input type="submit" value="Submit" />
 			</form>
 <%

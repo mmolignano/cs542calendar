@@ -24,7 +24,7 @@
         		<td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
       		</tr>
       		<tr>
-        		<td><a href="cs542calendar">CS542Calendar</a></td>
+        		<td><a href="listCalendar">List Calendar</a></td>
       		</tr>
       		<tr>
         		<td><a href="showcalendar">Show My Calendar</a></td>

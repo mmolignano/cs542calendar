@@ -21,6 +21,22 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/showcalendar</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>EditCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarEditServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EditCalendar</servlet-name>
+		<url-pattern>/editcalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>SaveCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarSaveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SaveCalendar</servlet-name>
+		<url-pattern>/savecalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>AddEvent</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventAddServlet</servlet-class>
 	</servlet>

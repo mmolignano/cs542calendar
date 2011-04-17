@@ -76,25 +76,43 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	public static boolean saveCalendar(Calendar cal) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		
+		try {
+			pm.makePersistent(cal);
+		} finally {
+			pm.close();
+		}
+		
+		return returner;
+	}
+	
 	public static boolean removeCalendar(Calendar cal) {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
 		
 		try {
 			pm.deletePersistent(cal);
 		} finally {
-			
+			pm.close();
 		}
 		
-		pm.close();
 		return returner;
 	}
 	
-//	public static Calendar getCalendar(Key key) {
-//		
-//	}
+	public static Calendar getCalendar(Key key) {
+		Collection<Calendar> cals = fetchAllCalendars();
+		for (Calendar c : cals) {
+			if (c.getId().equals(key)) {
+				return c;
+			}
+		}
+		return null;		
+	}
 	
 	public static Collection<Calendar> fetchAllCalendars() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();

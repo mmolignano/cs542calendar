@@ -28,21 +28,21 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-//		Transaction tx = pm.currentTransaction();
+		Transaction tx = pm.currentTransaction();
 		
 		try {	
-//			tx.begin();
+			tx.begin();
 			pm.makePersistent(ev);
-//			tx.commit();
-		}finally	{
-//			if (tx.isActive()){
-//				tx.rollback();
-//				returner = false;
-//			}
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
 		}
 		
-		pm.close();
-
 		return returner;
 	}
 	
@@ -51,11 +51,13 @@ public class DatabaseAccess {
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
-		System.out.println("wtf");
 		
 		try {	
 			tx.begin();
 			pm.makePersistent(ev);
+			Calendar c = getCalendar(key);
+			c.addEvent(ev);
+			pm.makePersistent(c);
 			tx.commit();
 		} catch (Exception e) {
 		} finally {

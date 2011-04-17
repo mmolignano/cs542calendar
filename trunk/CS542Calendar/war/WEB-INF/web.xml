@@ -29,6 +29,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/editcalendar</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>RemoveCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarRemoveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RemoveCalendar</servlet-name>
+		<url-pattern>/removecalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>SaveCalendar</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarSaveServlet</servlet-class>
 	</servlet>

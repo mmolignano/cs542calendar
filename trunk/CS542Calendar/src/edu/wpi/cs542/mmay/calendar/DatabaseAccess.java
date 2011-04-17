@@ -1,20 +1,15 @@
 package edu.wpi.cs542.mmay.calendar;
 
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.jdo.*;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
 
 import edu.wpi.cs542.mmay.calendar.kinds.*;
 
@@ -32,7 +27,7 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
+//		Transaction tx = pm.currentTransaction();
 		
 		try {	
 //			tx.begin();
@@ -58,7 +53,7 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
+//		Transaction tx = pm.currentTransaction();
 		
 		try {	
 //			tx.begin();
@@ -94,9 +89,23 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();;
 		
 		try {
-			pm.deletePersistent(cal);
+			tx.begin();
+			
+			// Get the correct calendar
+			Extent<Calendar> e = pm.getExtent(Calendar.class, true);
+		    Iterator<Calendar> iter = e.iterator();
+		    while (iter.hasNext())
+		    {
+		        Calendar c = (Calendar)iter.next();
+		        if (c.getId().equals(cal.getId())) {
+		        	pm.deletePersistent(c);
+		        	break;
+		        }
+		    }
+			tx.commit();
 		} finally {
 			pm.close();
 		}

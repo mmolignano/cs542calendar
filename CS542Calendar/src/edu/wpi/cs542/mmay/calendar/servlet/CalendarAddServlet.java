@@ -25,7 +25,6 @@ public class CalendarAddServlet extends HttpServlet {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
 		
-		//Event ev = new Event();
 		Calendar calendar = new Calendar();
 		
 		calendar.setName(req.getParameter("name"));

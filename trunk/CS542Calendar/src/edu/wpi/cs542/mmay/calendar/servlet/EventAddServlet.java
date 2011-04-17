@@ -3,7 +3,6 @@ package edu.wpi.cs542.mmay.calendar.servlet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +14,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
-import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
 import edu.wpi.cs542.mmay.calendar.kinds.Event;
 
 @SuppressWarnings("serial")
@@ -46,24 +44,20 @@ public class EventAddServlet extends HttpServlet {
 		ev.setLocation(req.getParameter("loc"));
 		ev.setDescription(req.getParameter("desc"));
 		
-//		boolean success = DatabaseAccess.addEventToCalendar(ev, key);
-		boolean success = DatabaseAccess.addEvent(ev);
-		
 		resp.setContentType("text/plain");
-		
+
+		boolean success = DatabaseAccess.addEventToCalendar(ev, key);
+
 		if (success) {
 			resp.getWriter().println("Added Event:\n");
 			resp.getWriter().println(ev.getEventName());
 			resp.getWriter().println(formatter.format(ev.getStartDate()));
-			//resp.getWriter().println(req.getParameter("endD"));
-			//resp.getWriter().println(req.getParameter("startT"));
-			//resp.getWriter().println(req.getParameter("endT"));
 			resp.getWriter().println(ev.getLocation());
 			resp.getWriter().println(ev.getDescription());
 		} else {
 			resp.getWriter().println("Add Unsuccessful");
 		}
 		
-//		resp.sendRedirect("/listCalendar");
+		resp.sendRedirect("/listEvent");
 	}
 }

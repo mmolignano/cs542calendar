@@ -13,9 +13,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
 
+@SuppressWarnings("serial")
 public class CalendarAddServlet extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		

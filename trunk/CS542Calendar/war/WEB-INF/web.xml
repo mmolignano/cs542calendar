@@ -53,6 +53,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/addevent</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>ListEvent</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListEvent</servlet-name>
+		<url-pattern>/listEvent</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>AddCalendar</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarAddServlet</servlet-class>
 	</servlet>

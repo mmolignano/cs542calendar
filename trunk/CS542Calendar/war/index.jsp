@@ -30,6 +30,9 @@
         		<td><a href="newEvent.jsp">Add Event</a></td>
       		</tr>
       		<tr>
+        		<td><a href="listEvent">List Events</a></td>
+      		</tr>
+      		<tr>
         		<td><a href="addCalendar.jsp">Add Calendar</a></td>
       		</tr>
       		<tr>

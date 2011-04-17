@@ -85,7 +85,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	public static boolean removeCalendar(Calendar cal) {
+	public static boolean removeCalendar(Key key) {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
@@ -100,7 +100,7 @@ public class DatabaseAccess {
 		    while (iter.hasNext())
 		    {
 		        Calendar c = (Calendar)iter.next();
-		        if (c.getId().equals(cal.getId())) {
+		        if (c.getId().equals(key)) {
 		        	pm.deletePersistent(c);
 		        	break;
 		        }

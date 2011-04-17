@@ -28,9 +28,8 @@ public class CalendarRemoveServlet extends HttpServlet {
 		
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
-		Calendar c = DatabaseAccess.getCalendar(key);
 		
-		DatabaseAccess.removeCalendar(c);
+		DatabaseAccess.removeCalendar(key);
 		
 		resp.sendRedirect("/listCalendar");
 	}

@@ -30,7 +30,7 @@ public class CalendarAddServlet extends HttpServlet {
 		Calendar calendar = new Calendar();
 		
 		calendar.setName(req.getParameter("name"));
-		calendar.setOwner(user.getNickname());
+		calendar.addOwner(user);
 		calendar.setDescription(req.getParameter("desc"));
 		
 		boolean success = DatabaseAccess.addCalendar(calendar);
@@ -42,7 +42,7 @@ public class CalendarAddServlet extends HttpServlet {
 		if (success) {
 			resp.getWriter().println("Added Calendar:\n");
 			resp.getWriter().println("Calendar Name: " + calendar.getName());
-			resp.getWriter().println("Calendar Owner: " + calendar.getOwner());
+			resp.getWriter().println("Calendar Owner: " + calendar.getOwners());
 			resp.getWriter().println("Calendar Description: " + calendar.getDescription());
 			
 		} else {

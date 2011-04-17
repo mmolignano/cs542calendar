@@ -1,18 +1,19 @@
 package edu.wpi.cs542.mmay.calendar;
 
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import javax.jdo.Extent;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.jdo.Transaction;
 import javax.jdo.*;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 
 import edu.wpi.cs542.mmay.calendar.kinds.*;
@@ -49,6 +50,10 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	public static boolean removeEvent(Event ev) {
+		return false;
+	}
+	
 	public static boolean addCalendar(Calendar cal) {
 		boolean returner = true;
 		
@@ -71,17 +76,36 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	public static List<Event> getEvents(){
-		ArrayList<Event> returner = new ArrayList<Event>();
+	public static boolean removeCalendar(Calendar cal) {
+		boolean returner = true;
 		
-		Collection<Event> events = fetchAllEvents();
-	
-		Iterator<Event> iterator = events.iterator();
-		while(iterator.hasNext()){
-			Event event = iterator.next();
-			returner.add(event);
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			pm.deletePersistent(cal);
+		} finally {
+			
 		}
 		
+		pm.close();
+		return returner;
+	}
+	
+//	public static Calendar getCalendar(Key key) {
+//		
+//	}
+	
+	public static Collection<Calendar> fetchAllCalendars() {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Collection<Calendar> returner = new LinkedList<Calendar>();
+		Extent<Calendar> calendars = pm.getExtent(Calendar.class);
+
+		Iterator<Calendar> iterator = calendars.iterator();
+		while (iterator.hasNext()){
+			returner.add(iterator.next());
+		}
+		pm.close();
 		return returner;
 	}
 	

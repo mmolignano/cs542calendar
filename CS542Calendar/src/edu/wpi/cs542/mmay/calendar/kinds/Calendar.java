@@ -10,6 +10,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.User;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class Calendar {
 	private String name;
 	
 	@Persistent
-	private String owner;
+	private List<User> owners;
 	
 	@Persistent
 	private String description;
@@ -37,13 +38,14 @@ public class Calendar {
 	
 	public Calendar() {
 		this.name = "";
-		this.owner = "";
+		this.owners = new LinkedList<User>();
 		events = new LinkedList<Event>();
 	}
 	
-	public Calendar(String name, String owner) {
+	public Calendar(String name, User user) {
 		this.name = name;
-		this.owner = owner;
+		this.owners = new LinkedList<User>();
+		this.owners.add(user);
 		events = new LinkedList<Event>();
 	}
 
@@ -63,12 +65,16 @@ public class Calendar {
 		this.name = name;
 	}
 
-	public String getOwner() {
-		return owner;
+	public List<User> getOwners() {
+		return owners;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void addOwner(User user) {
+		this.owners.add(user);
+	}
+	
+	public void removeOwner(User user) {
+		this.owners.remove(user);
 	}
 	
 	public String getDescription() {

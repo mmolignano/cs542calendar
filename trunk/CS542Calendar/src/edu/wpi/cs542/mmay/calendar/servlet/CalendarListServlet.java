@@ -45,7 +45,10 @@ public class CalendarListServlet extends HttpServlet {
 		}
 		
 		for(Calendar c : myCals) {
-			wr.println(c.getName() + ": " + c.getDescription() + "<br />");
+			wr.println("<form style=\"display: inline\" action=\"editcalendar\" method=\"post\" />");
+			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");
+			wr.println("<input type=\"submit\" value=\"Edit\"></form>");
+			wr.println(c.getName() + ": " + c.getDescription());
 		}
 	}
 

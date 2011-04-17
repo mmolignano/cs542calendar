@@ -1,7 +1,6 @@
 package edu.wpi.cs542.mmay.calendar.kinds;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;

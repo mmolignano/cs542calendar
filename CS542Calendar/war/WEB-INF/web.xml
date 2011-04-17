@@ -5,12 +5,12 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>CS542Calendar</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.DummyServlet</servlet-class>
+		<servlet-name>ListCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarListServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>CS542Calendar</servlet-name>
-		<url-pattern>/cs542calendar</url-pattern>
+		<servlet-name>ListCalendar</servlet-name>
+		<url-pattern>/listCalendar</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ShowCalendar</servlet-name>

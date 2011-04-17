@@ -13,7 +13,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
-import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
 
 @SuppressWarnings("serial")
 public class CalendarRemoveServlet extends HttpServlet {

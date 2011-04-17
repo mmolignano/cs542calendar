@@ -53,7 +53,8 @@ public class CalendarShowServlet extends HttpServlet {
 //		
 //		resp.getWriter().println("</table></body></html>");
 		
-		java.util.Calendar c3 = new GregorianCalendar(2011, 0, 1);
+//		java.util.Calendar c3 = new GregorianCalendar(2011, 0, 1);
+		java.util.Calendar c3 = new GregorianCalendar();
 		int day = c3.get(java.util.Calendar.DATE);
 		int month = c3.get(java.util.Calendar.MONTH) + 1;
 		int year = c3.get(java.util.Calendar.YEAR);

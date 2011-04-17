@@ -41,7 +41,6 @@ public class Event {
 	@Persistent
 	String description;
 	
-
 	public Event() {
 		eventName="Default Event";
 		startDate = java.util.Calendar.getInstance().getTime();

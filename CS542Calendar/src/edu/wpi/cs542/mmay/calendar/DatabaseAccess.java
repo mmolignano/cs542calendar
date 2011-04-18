@@ -14,9 +14,7 @@ import com.google.appengine.api.users.User;
 
 import edu.wpi.cs542.mmay.calendar.kinds.*;
 
-
 /**
- * 
  *
  * @author Mike Molignano
  * @author Andrew Yee
@@ -141,13 +139,9 @@ public class DatabaseAccess {
 	}
 	
 	public static Calendar getCalendar(Key key) {
-		Collection<Calendar> cals = fetchAllCalendars();
-		for (Calendar c : cals) {
-			if (c.getId().equals(key)) {
-				return c;
-			}
-		}
-		return null;		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar cal = pm.getObjectById(Calendar.class, key);
+		return cal;		
 	}
 	
 	public static Collection<Calendar> fetchAllCalendars() {

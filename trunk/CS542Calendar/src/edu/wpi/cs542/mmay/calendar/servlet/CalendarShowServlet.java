@@ -2,25 +2,28 @@ package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
-import edu.wpi.cs542.mmay.calendar.kinds.Event;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class CalendarShowServlet extends HttpServlet {
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)	throws IOException {
+		// Check that a user is logged in...
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		if (user == null) {
+			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
+        }
 		
 		resp.setContentType("text/html");
-		
 		PrintWriter pw = resp.getWriter();
 		
 		
@@ -148,9 +151,10 @@ public class CalendarShowServlet extends HttpServlet {
 		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
 		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
 		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">1</font><br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">2</font><br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">3</font><br><br><br><br></TD></tr></TABLE>");
+		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
+		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
+		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD></tr></TABLE>");
+//		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">3</font><br><br><br><br></TD></tr></TABLE>");
 		
 		
 		c3 = new GregorianCalendar(begYear, begMonth, begDay);
@@ -162,7 +166,8 @@ public class CalendarShowServlet extends HttpServlet {
 			year = c3.get(java.util.Calendar.YEAR);
 			maxDay = c3.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 			// First print this day
-			pw.println("Day: " + day + "\tMonth: " + (month+1) + "\tYear: " + year + "<br />");
+//			pw.println("Day: " + day + "\tMonth: " + (month+1) + "\tYear: " + year + "<br />");
+			// PRINT OUT ALL THE EVENTS OF THIS DAY
 			
 			// Move to next day
 			// First check to see if last day in month
@@ -180,20 +185,6 @@ public class CalendarShowServlet extends HttpServlet {
 				c3 = new GregorianCalendar(year, month, day+1);
 			}
 		}
-		
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Sunday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Monday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Tuesday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Wednesday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Thursday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Friday</font></TH>");
-//		pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">Saturday</font></TH>");
-		
-		
-		
-		
-		
-		
 	}
 	
 	private String getDayName(int mon) {

@@ -141,6 +141,7 @@ public class DatabaseAccess {
 	public static Calendar getCalendar(Key key) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Calendar cal = pm.getObjectById(Calendar.class, key);
+		pm.close();
 		return cal;		
 	}
 	
@@ -209,12 +210,9 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	public static List<Event> getEventsFromCalendar(Calendar calendar) {
+	public static Collection<Event> getEventsFromCalendar(Key key) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		//Query query = pm.newQuery(pm.getExtent(Calendar.class));
-		//query.setFilter("id == idParam");
-		//query.declareParameters(" idParam)
-		Calendar cal = pm.getObjectById(Calendar.class, calendar.getId());
+		Calendar cal = pm.getObjectById(Calendar.class, key);
 		pm.close();
 		return cal.getEvents();
 		

@@ -26,6 +26,13 @@ public class CalendarShowServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		PrintWriter pw = resp.getWriter();
 		
+		pw.println("<p>" + user.getNickname()+ " (You can <a href=\"" +
+				userService.createLogoutURL(req.getRequestURI()) + "\">sign out</a>.)</p>");
+		pw.println("<p><a href=\"index.jsp\">Home</a>");
+		
+		
+		pw.print("<h1>My Calendar</h1>");
+		
 		
 //		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 //		//Event ev = new Event("event 1", new Date(2012, 1, 1, 0, 0), "world", "end of the world");

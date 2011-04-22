@@ -21,14 +21,24 @@ public class Ownership {
 	@Persistent
 	List<Calendar> ownedCalendars;
 	
+	@Persistent
+	List<Calendar> pendingCalendars;
+	
+	@Persistent
+	List<Event> pendingEvents;
+	
 	public Ownership() {
 		this.account = new User("","");
-		this.ownedCalendars = new LinkedList<Calendar>(); 
+		this.ownedCalendars = new LinkedList<Calendar>();
+		this.pendingCalendars = new LinkedList<Calendar>();
+		this.pendingEvents = new LinkedList<Event>();
 	}
 	
 	public Ownership(User account) {
 		this.account = account;
 		this.ownedCalendars = new LinkedList<Calendar>();
+		this.pendingCalendars = new LinkedList<Calendar>();
+		this.pendingEvents = new LinkedList<Event>();
 	}
 	
 	
@@ -40,11 +50,11 @@ public class Ownership {
 		this.account = account;
 	}
 	
-	public void addCalendar(Calendar calendar) {
+	public void addOwnedCalendar(Calendar calendar) {
 		ownedCalendars.add(calendar);
 	}
 	
-	public void removeCalendar(Key calendarKey) {
+	public void removeOwnedCalendar(Key calendarKey) {
 		for (Calendar calendar : ownedCalendars) {
 			if (calendar.getId().equals(calendarKey)) {
 				ownedCalendars.remove(calendar);
@@ -53,7 +63,41 @@ public class Ownership {
 		}
 	}
 	
-	public List<Calendar> getCalendars() {
+	public List<Calendar> getOwnedCalendars() {
 		return ownedCalendars;
+	}
+	
+	public void addPendingCalendar(Calendar calendar) {
+		pendingCalendars.add(calendar);
+	}
+	
+	public void removePendingCalendar(Key calendarKey) {
+		for (Calendar calendar : pendingCalendars) {
+			if (calendar.getId().equals(calendarKey)) {
+				pendingCalendars.remove(calendar);
+				break;
+			}
+		}
+	}
+	
+	public List<Calendar> getPendingCalendars() {
+		return pendingCalendars;
+	}
+	
+	public void addPendingEvent(Event event) {
+		pendingEvents.add(event);
+	}
+	
+	public void removePendingEvent(Key eventKey) {
+		for (Event event : pendingEvents) {
+			if (event.getId().equals(eventKey)) {
+				pendingEvents.remove(event);
+				break;
+			}
+		}
+	}
+	
+	public List<Event> getPendingEvents() {
+		return pendingEvents;
 	}
 }

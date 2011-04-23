@@ -172,6 +172,20 @@ public class DatabaseAccess {
 		return myCalendars;
 	}
 	
+	public static Calendar getCalendarByUserByName(User user, String calName) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Collection<Calendar> myCalendars = getCalendarsByUser(user);
+		
+		
+		for (Calendar c : myCalendars) {
+			if (c.getName().equals(calName)) {
+				return c;
+			}
+		}
+		
+		return new Calendar(calName, user);
+	}
+	
 	public static List<Event> getEventsByDate(){
 		ArrayList<Event> returner = new ArrayList<Event>();
 		
@@ -225,4 +239,72 @@ public class DatabaseAccess {
 		return pendEvent.getPendingEvents();
 	}
 
+	public static Ownership getOwnershipByUser(User user) {
+		Ownership returner = new Ownership();
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Extent<Ownership> owners = pm.getExtent(Ownership.class);
+		Iterator<Ownership> iterator = owners.iterator();
+		boolean found = false;
+		while (iterator.hasNext()) {
+			Ownership thisOwner = iterator.next();
+			if (user.equals(thisOwner.getAccount())) {
+				returner = thisOwner;
+				found = true;
+				break;
+			}
+		}
+		pm.close();
+		
+		if (!found) {
+			returner = new Ownership(user);
+			addNewOwnership(returner);
+		}
+		
+		return returner;
+	}
+	
+	public static boolean addNewOwnership(Ownership owner) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+			pm.makePersistent(owner);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+		
+		return returner;
+	}
+
+	public static boolean addPendingCalendar(Ownership owner, Calendar cal) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+			owner.addPendingCalendar(cal);
+			pm.makePersistent(owner);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
 }

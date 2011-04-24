@@ -45,6 +45,22 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/savecalendar</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>ShareCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarShareServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShareCalendar</servlet-name>
+		<url-pattern>/sharecalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>PendingCalendar</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarPendingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PendingCalendar</servlet-name>
+		<url-pattern>/pendingcalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>AddEvent</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventAddServlet</servlet-class>
 	</servlet>

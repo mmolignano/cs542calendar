@@ -1,6 +1,7 @@
 package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,9 @@ public class CalendarShareServlet extends HttpServlet {
 		DatabaseAccess.addPendingCalendar(shareToOwner, calendarToShare);
 		//Add to pending Calendar
 		
+		resp.setContentType("text/html");
+		PrintWriter pw = resp.getWriter();
+		pw.println("Calendar " + calendarName + " shared with " + shareTo + "!");
 		
 	}
 }

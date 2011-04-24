@@ -38,6 +38,9 @@
       		<tr>
         		<td><a href="listCalendar">List Calendars</a></td>
       		</tr>
+      		<tr>
+      			<td><a href="pendingCalendar.jsp">Check Pending Calendars</a></td>
+      		</tr>
     	</table>
 <%
     	} else {

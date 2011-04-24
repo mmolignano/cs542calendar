@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -22,6 +24,8 @@ import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
  */
 public class CalendarShareServlet extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
+
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// Check that a user is logged in...
 		UserService userService = UserServiceFactory.getUserService();
@@ -30,17 +34,27 @@ public class CalendarShareServlet extends HttpServlet {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
     	}
 		
-		String calendarName = req.getParameter("calendar");
+		//String calendarName = req.getParameter("calendar");
+		String id = req.getParameter("key");
+		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
+		//Calendar calendarToShare = DatabaseAccess.getCalendar(key);
+		
 		String shareTo = req.getParameter("user");
 		User shareToUser = new User(shareTo, "gmail.com");
-		Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
-		Calendar calendarToShare = DatabaseAccess.getCalendarByUserByName(user, calendarName);
-		DatabaseAccess.addPendingCalendar(shareToOwner, calendarToShare);
+		//User shareToUser = new User(shareTo, shareTo.substring(shareTo.indexOf("@")+1));
+		//User shareToUser = new User(shareTo) 
+		//Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
+		//Calendar calendarToShare = DatabaseAccess.getCalendarByUserByName(user, calendarName);
+		//DatabaseAccess.addPendingCalendar(shareToOwner, calendarToShare);
+		DatabaseAccess.addPendingCalendar(shareToUser.getNickname(), key);
 		//Add to pending Calendar
 		
 		resp.setContentType("text/html");
 		PrintWriter pw = resp.getWriter();
-		pw.println("Calendar " + calendarName + " shared with " + shareTo + "!");
+		//pw.println("<p>Calendar " + calendarToShare.getName() + " shared with " + shareTo + "!</p>");
+		pw.println("<p>Calendar <b>" + req.getParameter("name") + "</b> shared with " + shareToUser.getNickname() + "!</p>");
+		
+		pw.println("<p><a href=\"listcalendar\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
 		
 	}
 }

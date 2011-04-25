@@ -32,7 +32,7 @@ public class EventRemoveServlet extends HttpServlet {
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
 		
 		//DatabaseAccess.removeCalendar(user.getNickname(), key);
-		DatabaseAccess.remove
+		//DatabaseAccess.remov
 		
 		resp.sendRedirect("/listCalendar");
 	}

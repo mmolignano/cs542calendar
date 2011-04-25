@@ -15,6 +15,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
+import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
 @SuppressWarnings("serial")
 public class CalendarListServlet extends HttpServlet {
@@ -25,6 +26,9 @@ public class CalendarListServlet extends HttpServlet {
 		if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
+
+		// force creation if not there already
+		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
 		
 		resp.setContentType("text/html");
 		PrintWriter wr = resp.getWriter();
@@ -35,14 +39,16 @@ public class CalendarListServlet extends HttpServlet {
 		
 		wr.println("<h1>My Calendars</h1>");
 		
-		Collection<Calendar> calendars = DatabaseAccess.fetchAllCalendars();
+		/*Collection<Calendar> calendars = DatabaseAccess.fetchAllCalendars();
 		Collection<Calendar> myCals = new ArrayList<Calendar>();
 		for (Calendar c : calendars) {
 			Collection<User> users = c.getOwners();
 			if (users.contains(user)) {
 				myCals.add(c);
 			}
-		}
+		}*/
+		
+		Collection<Calendar> myCals = DatabaseAccess.getCalendarsByUser(user.getNickname());
 		
 		wr.println("<table cellpadding=\"5\">");
 		for(Calendar c : myCals) {

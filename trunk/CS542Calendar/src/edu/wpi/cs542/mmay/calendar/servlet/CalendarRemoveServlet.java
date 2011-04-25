@@ -25,10 +25,7 @@ public class CalendarRemoveServlet extends HttpServlet {
 		if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
-		
-		// force creation if not there already
-		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
-		
+
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
 		

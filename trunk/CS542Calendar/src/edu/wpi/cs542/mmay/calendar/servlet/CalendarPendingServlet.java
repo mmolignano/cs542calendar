@@ -25,6 +25,9 @@ public class CalendarPendingServlet extends HttpServlet {
         }
 		//boolean success = false;
 		
+		// force creation if not there already
+		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
+		
 		boolean add = Boolean.parseBoolean(req.getParameter("add"));
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));

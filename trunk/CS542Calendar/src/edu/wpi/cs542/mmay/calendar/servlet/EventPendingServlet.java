@@ -63,7 +63,7 @@ public class EventPendingServlet extends HttpServlet {
 			wr.println("<p>Event <b>" + evName + "</b> has not been removed from your list of pending calendars.</p>");
 		}
 		
-		wr.println("<p><a href=\"pendingCalendar.jsp\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
+		wr.println("<p><a href=\"pendingEvent.jsp\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
 		
 	}
 	

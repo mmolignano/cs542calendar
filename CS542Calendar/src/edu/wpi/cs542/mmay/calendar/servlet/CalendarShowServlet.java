@@ -3,6 +3,7 @@ package edu.wpi.cs542.mmay.calendar.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServlet;
@@ -137,7 +138,8 @@ public class CalendarShowServlet extends HttpServlet {
 		for (GregorianCalendar c3 : curWeek) {
 			pw.println("<TD vAlign=top align=left width=\"14%\" >");
 			// Loop through and print events for this day
-			ArrayList<Event> events = DatabaseAccess.getEventsByUserAndDate(user.getNickname(), c3);
+			//ArrayList<Event> events = DatabaseAccess.getEventsByUserAndDate(user.getNickname(), c3);
+			Collection<Event> events = DatabaseAccess.getEventsByUserAndDate(user.getNickname(), c3);
 			pw.println("&nbsp;<br><br><br><br><br><br><br></TD>");
 		}
 		pw.println("</tr></TABLE>");

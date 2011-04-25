@@ -22,7 +22,7 @@ import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
  * @author Andrew Yee, Mike Molignano
  *
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@PersistenceCapable
 public class Calendar {
 	
 	@PrimaryKey

@@ -17,7 +17,7 @@ import com.google.appengine.api.users.User;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@PersistenceCapable
 public class Ownership {
 
 	@PrimaryKey

@@ -1,6 +1,7 @@
 package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServlet;
@@ -44,20 +45,23 @@ public class EventAddServlet extends HttpServlet {
 		ev.setLocation(req.getParameter("loc"));
 		ev.setDescription(req.getParameter("desc"));
 		
-		resp.setContentType("text/plain");
+		resp.setContentType("text/html");
 
 		boolean success = DatabaseAccess.addNewEventToCalendar(ev, key);
 
+		PrintWriter pw = resp.getWriter();
+		
 		if (success) {
-			resp.getWriter().println("Added Event:\n");
-			resp.getWriter().println(ev.getEventName());
-			resp.getWriter().println(formatter.format(ev.getStartDate()));
-			resp.getWriter().println(ev.getLocation());
-			resp.getWriter().println(ev.getDescription());
+			pw.println("Added the following event:");
+			pw.println(ev.getEventName());
+			pw.println(formatter.format(ev.getStartDate()));
+			pw.println(ev.getLocation());
+			pw.println(ev.getDescription());
 		} else {
-			resp.getWriter().println("Add Unsuccessful");
+			pw.println("Add Unsuccessful");
 		}
 		
-		resp.sendRedirect("/listEvent");
+		pw.println("<p><a href=\"listEvent\">Events</a>   <a href=\"index.jsp\">Home</a></p>");
+		//resp.sendRedirect("/listEvent");
 	}
 }

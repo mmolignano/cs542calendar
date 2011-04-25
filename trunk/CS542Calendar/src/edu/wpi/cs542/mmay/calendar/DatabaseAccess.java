@@ -344,12 +344,19 @@ public class DatabaseAccess {
 		return new Calendar(calName, user);
 	}
 	
-	public static ArrayList<Event> getEventsByDate(){
+	public static ArrayList<Event> getEventsByUserAndDate(String nick, GregorianCalendar cal) {
 		ArrayList<Event> returner = new ArrayList<Event>();
+		int year = cal.get(GregorianCalendar.YEAR);
+		int month = cal.get(GregorianCalendar.MONTH);	// Need to add 1 because function returns 0-11
+		int day = cal.get(GregorianCalendar.DATE);
 		
-//		int year = cal.get(GregorianCalendar.YEAR);
-//		int month = cal.get(GregorianCalendar.MONTH);
-//		int day = cal.get(GregorianCalendar.DATE);
+		// Get all events by all calendars of this user on given day
+		
+		return returner;
+	}
+	
+	public static List<Event> getEventsByDate(){
+		ArrayList<Event> returner = new ArrayList<Event>();
 		
 		Collection<Event> events = fetchAllEventsByDate();
 	

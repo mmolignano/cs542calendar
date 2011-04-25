@@ -48,7 +48,8 @@ public class CalendarListServlet extends HttpServlet {
 			}
 		}*/
 		
-		Collection<Calendar> myCals = DatabaseAccess.getCalendarsByUser(user.getNickname());
+		//Collection<Calendar> myCals = DatabaseAccess.getCalendarsByUser(user.getNickname());
+		Collection<Calendar> myCals = owner.getOwnedCalendars();
 		
 		wr.println("<table cellpadding=\"5\">");
 		for(Calendar c : myCals) {

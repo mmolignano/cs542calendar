@@ -41,6 +41,9 @@
       		<tr>
       			<td><a href="pendingCalendar.jsp">Check Pending Calendars</a></td>
       		</tr>
+      		<tr>
+      			<td><a href="pendingEvent.jsp">Check Pending Events</a></td>
+      		</tr>
     	</table>
 <%
     	} else {

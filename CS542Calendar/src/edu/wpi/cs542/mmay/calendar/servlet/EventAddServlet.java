@@ -46,7 +46,7 @@ public class EventAddServlet extends HttpServlet {
 		
 		resp.setContentType("text/plain");
 
-		boolean success = DatabaseAccess.addEventToCalendar(ev, key);
+		boolean success = DatabaseAccess.addNewEventToCalendar(ev, key);
 
 		if (success) {
 			resp.getWriter().println("Added Event:\n");

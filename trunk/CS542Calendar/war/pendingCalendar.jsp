@@ -29,41 +29,37 @@
     
     
    			<h1>My Pending Calendars</h1>
-    
+    		<table>
 <%
 			Ownership owner = DatabaseAccess.getOwnershipByUser(user);
-			//PendingCalendar pending = owner.getPendingCalendarKind();
-			//Collection<Calendar> pending = owner.getPendingCalendars();
-			//Set<Key> keys = pending.getPendingCalendars();
-			Set<Key> keys = owner.getPendingCalendarKeySet();
-			//Collection<Key> keys = owner.getPendingCalendars();
-			//for (Calendar c : pending) {
-			//<p>Owner nickname is: <%= owner.getNickname() %></p>
-			//<p># of keys is: <%= keys.size() %></p>
-%>
-			
-			
-			
-<%
-			for (Key key : keys) {
-				Calendar c = DatabaseAccess.getCalendar(key);
+			//Set<Key> keys = owner.getPendingCalendarKeySet();
+			Collection<Calendar> calendars = owner.getPendingCalendars();
+			for (Calendar c : calendars) {
+			//for (Key key : keys) {
+				//Calendar c = DatabaseAccess.getCalendar(key);
 %>				
-				
-				<b><%= c.getName() %></b> : <%= c.getDescription() %> 
-				<form style="display: inline" action="pendingcalendar" method="post">
-					<input type="hidden" name="key" value="<%= c.getId() %>" />
-					<input type="hidden" name="name" value="<%= c.getName() %>" />
-					<input type="hidden" name="add" value="true" />
-					<input type="submit" value="Save to My Calendars" />
-				</form>
-				<form style="display: inline" action="pendingcalendar" method="post">
-					<input type="hidden" name="key" value="<%= c.getId() %>" />
-					<input type="hidden" name="name" value="<%= c.getName() %>" />
-					<input type="hidden" name="add" value="false" />
-					<input type="submit" value="Remove Calendar" />
-				</form><br>
+				<tr>
+					<td><b><%= c.getName() %></b> : <%= c.getDescription() %></td> 
+					<td>
+						<form style="display: inline" action="pendingcalendar" method="post">
+							<input type="hidden" name="key" value="<%= c.getId() %>" />
+							<input type="hidden" name="name" value="<%= c.getName() %>" />
+							<input type="hidden" name="add" value="true" />
+							<input type="submit" value="Save to My Calendars" />
+						</form>
+						<form style="display: inline" action="pendingcalendar" method="post">
+							<input type="hidden" name="key" value="<%= c.getId() %>" />
+							<input type="hidden" name="name" value="<%= c.getName() %>" />
+							<input type="hidden" name="add" value="false" />
+							<input type="submit" value="Remove Calendar" />
+						</form><br>
+					</td>
+				</tr>
 <%
 			}
+%>
+			</table>
+<%
     	} else {
 %>
 			<p><a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>

@@ -97,6 +97,19 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	public static boolean addNewCalendar(String nickname, Calendar cal) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Ownership owner = pm.getObjectById(Ownership.class, nickname);
+		pm.close();
+		
+		returner &= addCalendar(cal);
+		returner &= addOwnedCalendar(owner, cal.getId());
+				
+		return returner;
+	}
+	
 	public static boolean saveCalendar(Calendar cal) {
 		boolean returner = true;
 		
@@ -111,7 +124,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 
-	
 	public static boolean addToOwnedCalendars(String nickname, Key calKey) {
 		boolean returner = true;
 		
@@ -170,8 +182,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	
-	public static boolean removeCalendar(Key key) {
+	public static boolean removeCalendar(String nickname, Key key) {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
@@ -181,21 +192,7 @@ public class DatabaseAccess {
 			tx.begin();
 			Calendar c = pm.getObjectById(Calendar.class, key);
 			pm.deletePersistent(c);
-			tx.commit();
-			/*
-			// Get the correct calendar
-			Extent<Calendar> e = pm.getExtent(Calendar.class, true);
-		    Iterator<Calendar> iter = e.iterator();
-		    while (iter.hasNext())
-		    {
-		        Calendar c = (Calendar)iter.next();
-		        if (c.getId().equals(key)) {
-		        	pm.deletePersistent(c);
-		        	break;
-		        }
-		    }
-		    */			
-			
+			tx.commit();	
 		} finally {
 			if (tx.isActive()){
 				tx.rollback();
@@ -203,7 +200,30 @@ public class DatabaseAccess {
 			}
 			pm.close();
 		}
+		 
+		returner &= removeFromOwner(nickname, key);
 		
+		return returner;
+	}
+	
+	public static boolean removeFromOwner(String nickname, Key calKey) {
+		boolean returner = true;
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Ownership owner = pm.getObjectById(Ownership.class, nickname);
+	    Transaction tx = pm.currentTransaction();
+	    try {
+	    	tx.begin();
+	    	owner.removeOwnedCalendar(calKey);
+	    	tx.commit();
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    } finally {
+	    	if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+	    }
 		return returner;
 	}
 	
@@ -226,20 +246,6 @@ public class DatabaseAccess {
 		pm.close();
 		return returner;
 	}
-	
-	/*public static Collection<Calendar> getCalendarsByUser(User user) {
-		//PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Collection<Calendar> myCalendars = new ArrayList<Calendar>();
-		Collection<Calendar> calendars = fetchAllCalendars();
-		
-		for (Calendar c : calendars) {
-			if (c.getOwners().contains(user)) {
-				myCalendars.add(c);
-			}
-		}
-		
-		return myCalendars;
-	}*/
 	
 	public static Collection<Calendar> getCalendarsByUser(User user) {
 		return getCalendarsByUser (user.getNickname());
@@ -273,6 +279,30 @@ public class DatabaseAccess {
 		return myCalendars;
 	}
 	
+	public static Collection<Event> getEventsByCalendarKey(Key calKey) {
+		return getEventsFromCalendar(calKey);
+	}
+	
+	public static Collection<Event> getCalendarsByCalendar(Calendar cal) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar calendar = pm.getObjectById(Calendar.class, cal.getId());
+		pm.close();
+		return getEventsFromCalendar(calendar.getEventSet());
+	}
+	
+	public static Collection<Event> getEventsFromCalendar(Set<Key> eventKeys) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Collection<Event> myEvents = new LinkedList<Event>();
+		Iterator<Key> iterator = eventKeys.iterator();
+		while (iterator.hasNext()) {
+			Key key = iterator.next();
+			myEvents.add(pm.getObjectById(Event.class, key));
+		}
+		pm.close();
+		return myEvents;
+	}
+	
+	
 	public static Calendar getCalendarByUserByName(User user, String calName) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Collection<Calendar> myCalendars = getCalendarsByUser(user);
@@ -286,6 +316,7 @@ public class DatabaseAccess {
 		
 		return new Calendar(calName, user);
 	}
+	
 	
 	public static List<Event> getEventsByDate(){
 		ArrayList<Event> returner = new ArrayList<Event>();
@@ -301,6 +332,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	
 	public static Collection<Event> fetchAllEvents() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Collection<Event> returner = new LinkedList<Event>();
@@ -314,6 +346,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	
 	public static Collection<Event> fetchAllEventsByDate() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		//Collection<Event> returner = new LinkedList<Event>();
@@ -325,6 +358,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	
 	public static Collection<Event> getEventsFromCalendar(Key key) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Calendar cal = pm.getObjectById(Calendar.class, key);
@@ -332,6 +366,7 @@ public class DatabaseAccess {
 		return cal.getEvents();
 		
 	}
+	
 	
 	public static Ownership getOwnershipByUser(User user) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
@@ -397,6 +432,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
+	
 	public static boolean addPendingCalendar(String nickname, Key calKey) {
 		boolean returner = true;
 		
@@ -423,7 +459,7 @@ public class DatabaseAccess {
 	}
 	
 	public static boolean addPendingCalendar(Ownership owner, Key calKey) {
-boolean returner = true;
+		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -460,6 +496,7 @@ boolean returner = true;
 		
 		return returner;
 	}
+	
 	
 	public static boolean removePendingCalendar(String nickname, Key calKey) {
 		boolean returner = true;

@@ -33,7 +33,7 @@ public class CalendarListServlet extends HttpServlet {
 		wr.println("<p><a href=\"index.jsp\">Home</a>");
 		
 		
-		wr.print("<h1>My Calendars</h1>");
+		wr.println("<h1>My Calendars</h1>");
 		
 		Collection<Calendar> calendars = DatabaseAccess.fetchAllCalendars();
 		Collection<Calendar> myCals = new ArrayList<Calendar>();
@@ -44,8 +44,11 @@ public class CalendarListServlet extends HttpServlet {
 			}
 		}
 		
+		wr.println("<table cellpadding=\"5\">");
 		for(Calendar c : myCals) {
 			// Button to Edit Calendar
+			wr.println("<tr>");
+			wr.println("<td>");
 			wr.println("<form style=\"display: inline\" action=\"editcalendar\" method=\"post\" />");
 			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");
 			wr.println("<input type=\"submit\" value=\"Edit\"></form>");
@@ -53,17 +56,24 @@ public class CalendarListServlet extends HttpServlet {
 			wr.println("<form style=\"display: inline\" action=\"removecalendar\" method=\"post\" />");
 			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");
 			wr.println("<input type=\"submit\" value=\"Remove\"></form>");
+			wr.println("</td>");
+			wr.println("<td>");
 			// Print Calendar and Description
 			wr.println("<b>" + c.getName() + "</b>: " + c.getDescription());
+			wr.println("</td>");
 			// Button to Share Calendar with someone
+			wr.println("<td>");
 			wr.println("<form style=\"display: inline\" action=\"sharecalendar\" method=\"post\" />");
 			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");
 			wr.println("<input type=\"hidden\" name=\"name\" value=\"" + c.getName() + "\" />");
 			wr.println("  Share with: <input type=\"text\" name=\"user\" />");
 			wr.println("<input type=\"submit\" value=\"Share\"></form>");
+			wr.println("</td>");
 			
-			wr.println("<br />");
+			//wr.println("<br />");
+			wr.println("</tr>");
 		}
+		wr.println("</table>");
 	}
 
 }

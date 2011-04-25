@@ -374,19 +374,27 @@ public class DatabaseAccess {
 		Ownership owner = pm.getObjectById(Ownership.class, nick);
 		Collection<Calendar> calendars = owner.getOwnedCalendars();
 		Set<Key> eventKeys = new HashSet<Key>();
+		Collection<Event> returner = new LinkedList<Event>();
 		for (Calendar c : calendars) {
 			eventKeys.addAll(c.getEventSet());
 		}
-		Collection<Event> events = (Collection<Event>) pm.getObjectsById(eventKeys);
-		pm.close();
-		//return returner;
-		Collection<Event> returner = new LinkedList<Event>();
-		//Iterator<Event> eventIterator = events.iterator();\
-		for (Event ev : events) {
+		
+		for (Key key : eventKeys) {
+			Event ev = pm.getObjectById(Event.class, key);
 			if (formatter.format(ev.getStartDate()).equals(formatter.format(date))) {
 				returner.add(ev);
 			}
 		}
+		//Collection<Event> events = (Collection<Event>) pm.getObjectsById(eventKeys);
+		pm.close();
+		//return returner;
+		
+		//Iterator<Event> eventIterator = events.iterator();\
+		/*for (Event ev : events) {
+			if (formatter.format(ev.getStartDate()).equals(formatter.format(date))) {
+				returner.add(ev);
+			}
+		}*/
 		return returner;
 	}
 	

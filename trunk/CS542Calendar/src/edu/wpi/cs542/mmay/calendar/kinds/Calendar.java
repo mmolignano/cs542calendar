@@ -17,7 +17,7 @@ import com.google.appengine.api.users.User;
  * @author Andrew Yee, Mike Molignano
  *
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class Calendar {
 	
 	@PrimaryKey

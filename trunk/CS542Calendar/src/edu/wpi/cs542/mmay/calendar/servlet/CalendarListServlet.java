@@ -54,7 +54,7 @@ public class CalendarListServlet extends HttpServlet {
 			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");
 			wr.println("<input type=\"submit\" value=\"Remove\"></form>");
 			// Print Calendar and Description
-			wr.println(c.getName() + ": " + c.getDescription());
+			wr.println("<b>" + c.getName() + "</b>: " + c.getDescription());
 			// Button to Share Calendar with someone
 			wr.println("<form style=\"display: inline\" action=\"sharecalendar\" method=\"post\" />");
 			wr.println("<input type=\"hidden\" name=\"key\" value=\"" + c.getId() + "\" />");

@@ -6,7 +6,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class RecurringEvent extends Event {
 
 	//@Persistent

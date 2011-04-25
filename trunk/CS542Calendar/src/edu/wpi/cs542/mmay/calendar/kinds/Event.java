@@ -3,6 +3,7 @@ package edu.wpi.cs542.mmay.calendar.kinds;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -15,7 +16,7 @@ import java.util.Date;
  * @author Mike Molignano
  *
  */
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class Event {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

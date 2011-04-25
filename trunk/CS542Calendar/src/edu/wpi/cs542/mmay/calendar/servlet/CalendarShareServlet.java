@@ -43,18 +43,22 @@ public class CalendarShareServlet extends HttpServlet {
 		User shareToUser = new User(shareTo, "gmail.com");
 		//User shareToUser = new User(shareTo, shareTo.substring(shareTo.indexOf("@")+1));
 		//User shareToUser = new User(shareTo) 
-		//Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
+		Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
 		//Calendar calendarToShare = DatabaseAccess.getCalendarByUserByName(user, calendarName);
 		//DatabaseAccess.addPendingCalendar(shareToOwner, calendarToShare);
-		DatabaseAccess.addPendingCalendar(shareToUser.getNickname(), key);
+		boolean success = DatabaseAccess.addPendingCalendar(shareToUser.getNickname(), key);
 		//Add to pending Calendar
 		
 		resp.setContentType("text/html");
 		PrintWriter pw = resp.getWriter();
 		//pw.println("<p>Calendar " + calendarToShare.getName() + " shared with " + shareTo + "!</p>");
-		pw.println("<p>Calendar <b>" + req.getParameter("name") + "</b> shared with " + shareToUser.getNickname() + "!</p>");
+		if (success) {
+			pw.println("<p>Calendar <b>" + req.getParameter("name") + "</b> shared with " + shareToUser.getNickname() + "!</p>");
+		} else {
+			pw.println("<p>Calendar <b>" + req.getParameter("name") + "</b> was not shared with " + shareToUser.getNickname() + "!</p>");
+		}
 		
-		pw.println("<p><a href=\"listcalendar\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
+		pw.println("<p><a href=\"listCalendar\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
 		
 	}
 }

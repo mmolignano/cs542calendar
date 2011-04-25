@@ -74,6 +74,29 @@ public class DatabaseAccess {
 		return false;
 	}
 	
+	public static boolean removeEventFromCalendar(Key calKey, Key evKey) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar cal = pm.getObjectById(Calendar.class, calKey);
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+			cal.removeEvent(evKey);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
+	
 	public static boolean addCalendar(Calendar cal) {
 		boolean returner = true;
 		
@@ -187,18 +210,21 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar c = pm.getObjectById(Calendar.class, key);
 		Transaction tx = pm.currentTransaction();;
-		
-		try {
-			tx.begin();
-			Calendar c = pm.getObjectById(Calendar.class, key);
-			pm.deletePersistent(c);
-			tx.commit();	
-		} finally {
-			if (tx.isActive()){
-				tx.rollback();
-				returner = false;
+		if (c.getOwners().size() <= 1) { 
+			try {
+				tx.begin();
+				pm.deletePersistent(c);
+				tx.commit();	
+			} finally {
+				if (tx.isActive()){
+					tx.rollback();
+					returner = false;
+				}
+				pm.close();
 			}
+		} else {
 			pm.close();
 		}
 		 

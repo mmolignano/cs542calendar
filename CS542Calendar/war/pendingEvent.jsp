@@ -3,8 +3,8 @@
 <%@page import="java.util.Collection" %>
 <%@page import="java.util.Set" %>
 <%@page import="edu.wpi.cs542.mmay.calendar.kinds.Calendar" %>
+<%@page import="edu.wpi.cs542.mmay.calendar.kinds.Event" %>
 <%@page import="edu.wpi.cs542.mmay.calendar.kinds.Ownership" %>
-<%@page import="edu.wpi.cs542.mmay.calendar.kinds.PendingCalendar" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
@@ -37,11 +37,11 @@
 			for (Event ev : pendingEvents) {
 %>				
 				<tr>
-					<td><b><%= ev.getName() %></b> : <%= ev.getDescription() %></td> 
+					<td><b><%= ev.getEventName() %></b> : <%= ev.getDescription() %></td> 
 					<td>
 						<form style="display: inline" action="pendingevent" method="post">
 							<input type="hidden" name="evKey" value="<%= ev.getId() %>" />
-							<input type="hidden" name="evName" value="<%= ev.getName() %>" />
+							<input type="hidden" name="evName" value="<%= ev.getEventName() %>" />
 							<input type="hidden" name="add" value="true" />
 							<select name="calKey">
 <%
@@ -56,7 +56,7 @@
 						</form>
 						<form style="display: inline" action="pendingevent" method="post">
 							<input type="hidden" name="key" value="<%= ev.getId() %>" />
-							<input type="hidden" name="name" value="<%= ev.getName() %>" />
+							<input type="hidden" name="name" value="<%= ev.getEventName() %>" />
 							<input type="hidden" name="add" value="false" />
 							<input type="submit" value="Remove Event" />
 						</form><br>

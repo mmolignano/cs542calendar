@@ -4,7 +4,6 @@
 <%@page import="java.util.Set" %>
 <%@page import="edu.wpi.cs542.mmay.calendar.kinds.Calendar" %>
 <%@page import="edu.wpi.cs542.mmay.calendar.kinds.Ownership" %>
-<%@page import="edu.wpi.cs542.mmay.calendar.kinds.PendingCalendar" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>

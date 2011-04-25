@@ -344,12 +344,12 @@ public class DatabaseAccess {
 		return new Calendar(calName, user);
 	}
 	
-	public static ArrayList<Event> getEventsByDate(GregorianCalendar cal){
+	public static ArrayList<Event> getEventsByDate(){
 		ArrayList<Event> returner = new ArrayList<Event>();
 		
-		int year = cal.get(GregorianCalendar.YEAR);
-		int month = cal.get(GregorianCalendar.MONTH);
-		int day = cal.get(GregorianCalendar.DATE);
+//		int year = cal.get(GregorianCalendar.YEAR);
+//		int month = cal.get(GregorianCalendar.MONTH);
+//		int day = cal.get(GregorianCalendar.DATE);
 		
 		Collection<Event> events = fetchAllEventsByDate();
 	

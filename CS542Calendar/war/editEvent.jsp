@@ -68,7 +68,7 @@
 				</table>
 				<input type="submit" value="Submit" />
 			</form>
-			<form style="display: inline" name="cancel" action="showcalendar.jsp" method="get">
+			<form style="display: inline" name="cancel" action="showcalendar" method="get">
 				<input type="submit" value="Cancel" />
 			</form>
 			

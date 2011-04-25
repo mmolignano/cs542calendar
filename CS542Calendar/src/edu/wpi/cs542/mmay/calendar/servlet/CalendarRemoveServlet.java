@@ -13,6 +13,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
+import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
 @SuppressWarnings("serial")
 public class CalendarRemoveServlet extends HttpServlet {
@@ -25,10 +26,13 @@ public class CalendarRemoveServlet extends HttpServlet {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
 		
+		// force creation if not there already
+		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
+		
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
 		
-		DatabaseAccess.removeCalendar(key);
+		DatabaseAccess.removeCalendar(user.getNickname(), key);
 		
 		resp.sendRedirect("/listCalendar");
 	}

@@ -14,6 +14,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
+import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
 @SuppressWarnings("serial")
 public class CalendarSaveServlet extends HttpServlet {
@@ -25,7 +26,7 @@ public class CalendarSaveServlet extends HttpServlet {
 		if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
-		
+				
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
 		Calendar c = DatabaseAccess.getCalendar(key);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -370,11 +371,22 @@ public class DatabaseAccess {
 		}
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Query query = pm.newQuery(pm.getExtent(Event.class));
-		// Get all events by all calendars of this user on given day
-		Collection<Event> returner = (Collection<Event>)(query.execute());
-		//return returner;
+		Ownership owner = pm.getObjectById(Ownership.class, nick);
+		Collection<Calendar> calendars = owner.getOwnedCalendars();
+		Set<Key> eventKeys = new HashSet<Key>();
+		for (Calendar c : calendars) {
+			eventKeys.addAll(c.getEventSet());
+		}
+		Collection<Event> events = (Collection<Event>) pm.getObjectsById(eventKeys);
 		pm.close();
+		//return returner;
+		Collection<Event> returner = new LinkedList<Event>();
+		//Iterator<Event> eventIterator = events.iterator();\
+		for (Event ev : events) {
+			if (formatter.format(ev.getStartDate()).equals(formatter.format(date))) {
+				returner.add(ev);
+			}
+		}
 		return returner;
 	}
 	

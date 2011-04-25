@@ -140,6 +140,12 @@ public class CalendarShowServlet extends HttpServlet {
 			// Loop through and print events for this day
 			Collection<Event> events = DatabaseAccess.getEventsByUserAndDate(user.getNickname(), c3);
 			for (Event e : events) {
+				// Add button to edit event
+				// Button to Edit Calendar
+				pw.println("<form style=\"display: inline\" action=\"editevent\" method=\"post\" />");
+				pw.println("<input type=\"hidden\" name=\"key\" value=\"" + e.getId() + "\" />");
+				pw.println("<input type=\"submit\" value=\"+\"></form>");
+				
 				pw.println(e.getEventName() + "<br />");
 			}
 			pw.println("&nbsp;<br /><br /><br /><br /></TD>");

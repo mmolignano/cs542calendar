@@ -137,7 +137,7 @@ public class CalendarShowServlet extends HttpServlet {
 		for (GregorianCalendar c3 : curWeek) {
 			pw.println("<TD vAlign=top align=left width=\"14%\" >");
 			// Loop through and print events for this day
-//			ArrayList<Event> events = DatabaseAccess.getEventsByDate(c3);
+			ArrayList<Event> events = DatabaseAccess.getEventsByUserAndDate(user.getNickname(), c3);
 			pw.println("&nbsp;<br><br><br><br><br><br><br></TD>");
 		}
 		pw.println("</tr></TABLE>");

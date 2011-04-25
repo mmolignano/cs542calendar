@@ -3,6 +3,7 @@ package edu.wpi.cs542.mmay.calendar;
 import java.util.ArrayList;
 
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -343,8 +344,12 @@ public class DatabaseAccess {
 		return new Calendar(calName, user);
 	}
 	
-	public static List<Event> getEventsByDate(){
+	public static ArrayList<Event> getEventsByDate(GregorianCalendar cal){
 		ArrayList<Event> returner = new ArrayList<Event>();
+		
+		int year = cal.get(GregorianCalendar.YEAR);
+		int month = cal.get(GregorianCalendar.MONTH);
+		int day = cal.get(GregorianCalendar.DATE);
 		
 		Collection<Event> events = fetchAllEventsByDate();
 	

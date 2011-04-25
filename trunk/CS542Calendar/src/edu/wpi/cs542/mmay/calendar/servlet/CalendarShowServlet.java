@@ -15,6 +15,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
 import edu.wpi.cs542.mmay.calendar.WeekCalendar;
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
 import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
 @SuppressWarnings("serial")
@@ -131,13 +132,17 @@ public class CalendarShowServlet extends HttpServlet {
 			}
 		}
 		
-		pw.println("<TR><TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD>");
-		pw.println("<TD vAlign=top align=left width=\"14%\" >&nbsp;<br><br><br><br></TD></tr></TABLE>");
+		pw.println("<TR>");
+		// Loop through days and print events for that day
+		for (GregorianCalendar c3 : curWeek) {
+			pw.println("<TD vAlign=top align=left width=\"14%\" >");
+			// Loop through and print events for this day
+			ArrayList<Event> events = DatabaseAccess.getEventsByDate(c3);
+			pw.println("&nbsp;<br><br><br><br><br><br><br></TD>");
+		}
+		pw.println("</tr></TABLE>");
+		
+		
 //		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">3</font><br><br><br><br></TD></tr></TABLE>");
 		
 		

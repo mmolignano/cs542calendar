@@ -81,8 +81,12 @@ public class Ownership {
 		ownedCalendars.add(calendarKey);
 	}
 	
-	public Set<Key> getOwnedCalendars() {
+	public Set<Key> getOwnedCalendarsKeySet() {
 		return ownedCalendars;
+	}
+	
+	public Collection<Calendar> getOwnedCalendars() {
+		return DatabaseAccess.getCalendars(getOwnedCalendarsKeySet());
 	}
 	
 	public void addPendingCalendar(Calendar calendar) {
@@ -109,11 +113,19 @@ public class Ownership {
 		pendingEvents.add(event.getId());
 	}
 	
+	public void addPendingEvent(Key evKey) {
+		pendingEvents.add(evKey);
+	}
+	
 	public void removePendingEvent(Key eventKey) {
 		pendingEvents.remove(eventKey);
 	}
 	
 	public Set<Key> getPendingEventSet() {
 		return pendingEvents;
+	}
+	
+	public Collection<Event> getPendingEvents() {
+		return DatabaseAccess.getEventsFromCalendar(pendingEvents);
 	}
 }

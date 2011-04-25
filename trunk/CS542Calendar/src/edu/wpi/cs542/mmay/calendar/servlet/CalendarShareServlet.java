@@ -34,24 +34,22 @@ public class CalendarShareServlet extends HttpServlet {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
     	}
 		
-		//String calendarName = req.getParameter("calendar");
+		// force creation if not there already
+		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
+		
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
-		//Calendar calendarToShare = DatabaseAccess.getCalendar(key);
 		
 		String shareTo = req.getParameter("user");
 		User shareToUser = new User(shareTo, "gmail.com");
-		//User shareToUser = new User(shareTo, shareTo.substring(shareTo.indexOf("@")+1));
-		//User shareToUser = new User(shareTo) 
 		Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
-		//Calendar calendarToShare = DatabaseAccess.getCalendarByUserByName(user, calendarName);
-		//DatabaseAccess.addPendingCalendar(shareToOwner, calendarToShare);
+
 		boolean success = DatabaseAccess.addPendingCalendar(shareToUser.getNickname(), key);
-		//Add to pending Calendar
+		
 		
 		resp.setContentType("text/html");
 		PrintWriter pw = resp.getWriter();
-		//pw.println("<p>Calendar " + calendarToShare.getName() + " shared with " + shareTo + "!</p>");
+		
 		if (success) {
 			pw.println("<p>Calendar <b>" + req.getParameter("name") + "</b> shared with " + shareToUser.getNickname() + "!</p>");
 		} else {

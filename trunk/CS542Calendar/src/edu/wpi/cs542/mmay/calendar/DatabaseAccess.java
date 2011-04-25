@@ -45,7 +45,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	public static boolean addEventToCalendar(Event ev, Key calKey) {
+	public static boolean addNewEventToCalendar(Event ev, Key calKey) {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
@@ -124,6 +124,7 @@ public class DatabaseAccess {
 		return returner;
 	}
 
+	/** This is for sharing ONLY **/
 	public static boolean addToOwnedCalendars(String nickname, Key calKey) {
 		boolean returner = true;
 		
@@ -258,7 +259,7 @@ public class DatabaseAccess {
 		//Collection<Calendar> myCalendars = (Collection<Calendar>) pm.getObjectsById(calKeys);
 		pm.close();
 		//return myCalendars;
-		return getCalendars(owner.getOwnedCalendars());
+		return getCalendars(owner.getOwnedCalendarsKeySet());
 	}
 	
 	public static Collection<Calendar> getCalendars(Set<Key> calKeys) {
@@ -302,7 +303,6 @@ public class DatabaseAccess {
 		return myEvents;
 	}
 	
-	
 	public static Calendar getCalendarByUserByName(User user, String calName) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Collection<Calendar> myCalendars = getCalendarsByUser(user);
@@ -316,7 +316,6 @@ public class DatabaseAccess {
 		
 		return new Calendar(calName, user);
 	}
-	
 	
 	public static List<Event> getEventsByDate(){
 		ArrayList<Event> returner = new ArrayList<Event>();
@@ -332,7 +331,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	
 	public static Collection<Event> fetchAllEvents() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Collection<Event> returner = new LinkedList<Event>();
@@ -346,7 +344,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	
 	public static Collection<Event> fetchAllEventsByDate() {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		//Collection<Event> returner = new LinkedList<Event>();
@@ -358,7 +355,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	
 	public static Collection<Event> getEventsFromCalendar(Key key) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Calendar cal = pm.getObjectById(Calendar.class, key);
@@ -366,7 +362,6 @@ public class DatabaseAccess {
 		return cal.getEvents();
 		
 	}
-	
 	
 	public static Ownership getOwnershipByUser(User user) {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
@@ -432,7 +427,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	
 	public static boolean addPendingCalendar(String nickname, Key calKey) {
 		boolean returner = true;
 		
@@ -481,23 +475,6 @@ public class DatabaseAccess {
 		return returner;
 	}
 	
-	public static PendingEvent getPendingEventsForUser(User user) {
-		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		PendingEvent returner = pm.getObjectById(PendingEvent.class, user.getNickname()); 
-		pm.close();
-		
-		return returner;
-	}
-	
-	public static PendingCalendar getPendingCalendarsForUser(User user) {
-		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		PendingCalendar returner = pm.getObjectById(PendingCalendar.class, user.getNickname()); 
-		pm.close();
-		
-		return returner;
-	}
-	
-	
 	public static boolean removePendingCalendar(String nickname, Key calKey) {
 		boolean returner = true;
 		
@@ -510,6 +487,123 @@ public class DatabaseAccess {
 			//PendingCalendar pending = pm.getObjectById(PendingCalendar.class, nickname);
 			owner.removePendingCalendar(calKey);
 			tx.commit();
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+		
+		return returner;
+	}
+	
+	public static boolean addPendingEvent(Ownership owner, Event ev) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+			owner.addPendingEvent(ev);
+			pm.makePersistent(owner);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
+	
+	public static boolean addPendingEvent(String nickname, Key evKey) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			tx.begin();
+			Ownership owner = pm.getObjectById(Ownership.class, nickname);
+			owner.addPendingEvent(evKey);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
+	
+	public static boolean addPendingEvent(Ownership owner, Key evKey) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {	
+			owner.addPendingEvent(evKey);
+			pm.makePersistent(owner);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+
+		return returner;
+	}
+	
+	public static boolean removePendingEvent(String nickname, Key evKey) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			tx.begin();
+			Ownership owner = pm.getObjectById(Ownership.class, nickname);
+			owner.removePendingEvent(evKey);
+			tx.commit();
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+		
+		return returner;
+	}
+	
+	/** this is for sharing ONLY **/
+	public static boolean addEventToCalendar(Key calKey, Key evKey) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar cal = pm.getObjectById(Calendar.class, calKey);
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			tx.begin();
+			cal.addEvent(evKey);
+			tx.commit();
+		} catch (Exception e) {
+			
 		} finally {
 			if (tx.isActive()){
 				tx.rollback();

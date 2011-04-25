@@ -69,8 +69,24 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/addevent</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>ShareEvent</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventShareServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShareEvent</servlet-name>
+		<url-pattern>/shareevent</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>PendingEvent</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventPendingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PendingEvent</servlet-name>
+		<url-pattern>/pendingevent</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>ListEvent</servlet-name>
-		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventListServlet</servlet-class>
+	<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventListServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ListEvent</servlet-name>

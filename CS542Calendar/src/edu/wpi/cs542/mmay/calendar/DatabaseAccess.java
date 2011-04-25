@@ -78,6 +78,79 @@ public class DatabaseAccess {
 		return false;
 	}
 	
+	public static boolean removeEvent(Key evKey) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Event event = pm.getObjectById(Event.class, evKey);
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			tx.begin();
+			pm.deletePersistent(event);
+			tx.commit();
+		} catch (Exception e) {
+			
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+			}
+			pm.close();
+		}
+		
+		removeEventFromCalendars(evKey);
+		removeEventFromPending(evKey);
+		
+		return true;
+	}
+	
+	public static boolean removeEventFromCalendars(Key evKey) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Collection<Calendar> calendars = fetchAllCalendars();
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			tx.begin();
+			for (Calendar cal : calendars) {
+				cal.removeEvent(evKey);
+				pm.makePersistent(cal);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+			}
+			pm.close();
+		}
+		return true;
+	}
+	
+	public static boolean removeEventFromPending(Key evKey) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Extent<Ownership> owners = pm.getExtent(Ownership.class);
+		Transaction tx = pm.currentTransaction();
+
+		
+		try {
+			tx.begin();
+			Iterator<Ownership> iterator = owners.iterator();
+			while (iterator.hasNext()){
+				Ownership owner = iterator.next();
+				owner.removePendingEvent(evKey);
+				pm.makePersistent(owner);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+			}
+			pm.close();
+		}
+		return true;
+	}
+	
 	public static boolean removeEventFromCalendar(Key calKey, Key evKey) {
 		boolean returner = true;
 		
@@ -141,10 +214,40 @@ public class DatabaseAccess {
 		boolean returner = true;
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
 		
 		try {
+			tx.begin();
 			pm.makePersistent(cal);
+			tx.commit();
+		} catch (Exception e) {
 		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
+			pm.close();
+		}
+		
+		return returner;
+	}
+	
+	public static boolean saveEvent(Event ev) {
+		boolean returner = true;
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		try {
+			tx.begin();
+			pm.makePersistent(ev);
+			tx.commit();
+		} catch (Exception e) {
+		} finally {
+			if (tx.isActive()){
+				tx.rollback();
+				returner = false;
+			}
 			pm.close();
 		}
 		
@@ -263,6 +366,13 @@ public class DatabaseAccess {
 		Calendar cal = pm.getObjectById(Calendar.class, key);
 		pm.close();
 		return cal;		
+	}
+	
+	public static Event getEvent(Key key) {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Event ev = pm.getObjectById(Event.class, key);
+		pm.close();
+		return ev;		
 	}
 	
 	public static Collection<Calendar> fetchAllCalendars() {

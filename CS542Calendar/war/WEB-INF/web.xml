@@ -45,6 +45,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/savecalendar</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>SaveEvent</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventSaveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SaveEvent</servlet-name>
+		<url-pattern>/saveevent</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>ShareCalendar</servlet-name>
 		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.CalendarShareServlet</servlet-class>
 	</servlet>
@@ -99,6 +107,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>AddCalendar</servlet-name>
 		<url-pattern>/addcalendar</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>RemoveEvent</servlet-name>
+		<servlet-class>edu.wpi.cs542.mmay.calendar.servlet.EventRemoveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RemoveEvent</servlet-name>
+		<url-pattern>/removeevent</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

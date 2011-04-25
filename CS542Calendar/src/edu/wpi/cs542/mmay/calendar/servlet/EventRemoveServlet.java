@@ -28,12 +28,16 @@ public class EventRemoveServlet extends HttpServlet {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
         }
 
-		String id = req.getParameter("key");
-		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
+		String evId = req.getParameter("key");
+		Key evKey = KeyFactory.createKey(evId.substring(0, evId.indexOf('(')), new Long(evId.substring(evId.indexOf('(') + 1, evId.indexOf(')'))));
 		
-		//DatabaseAccess.removeCalendar(user.getNickname(), key);
-		//DatabaseAccess.remov
+		/*String calId = req.getParameter("calKey");
+		Key calKey = KeyFactory.createKey(evId.substring(0, calId.indexOf('(')), new Long(calId.substring(calId.indexOf('(') + 1, calId.indexOf(')'))));*/
 		
-		resp.sendRedirect("/listCalendar");
+		//DatabaseAccess.removeEventFromCalendar(calKey, evKey);
+		DatabaseAccess.removeEvent(evKey);
+		
+		
+		resp.sendRedirect("/showcalendar");
 	}
 }

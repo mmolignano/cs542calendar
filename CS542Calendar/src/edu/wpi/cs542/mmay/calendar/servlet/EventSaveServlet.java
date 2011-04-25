@@ -1,7 +1,7 @@
 package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,48 +12,45 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
+import edu.wpi.cs542.mmay.calendar.kinds.Calendar;
+import edu.wpi.cs542.mmay.calendar.kinds.Event;
 import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
-// Working on this one now...
-// Mike
-
 @SuppressWarnings("serial")
-public class EventShareServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
+public class EventSaveServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
 		// Check that a user is logged in...
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
-    	}
-		
-		// force creation if not there already
-		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
-		
+        }
+				
 		String id = req.getParameter("key");
 		Key key = KeyFactory.createKey(id.substring(0, id.indexOf('(')), new Long(id.substring(id.indexOf('(') + 1, id.indexOf(')'))));
+		Event ev = DatabaseAccess.getEvent(key);
 		
-		String shareTo = req.getParameter("user");
-		User shareToUser = new User(shareTo, "gmail.com");
-		Ownership shareToOwner = DatabaseAccess.getOwnershipByUser(shareToUser);
-
-		boolean success = DatabaseAccess.addPendingEvent(shareToUser.getNickname(), key);
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		
-		
-		resp.setContentType("text/html");
-		PrintWriter pw = resp.getWriter();
-		
-		if (success) {
-			pw.println("<p>Event <b>" + req.getParameter("name") + "</b> shared with " + shareToUser.getNickname() + "!</p>");
-		} else {
-			pw.println("<p>Event <b>" + req.getParameter("name") + "</b> was not shared with " + shareToUser.getNickname() + "!</p>");
+		try {
+			ev.setEventName(req.getParameter("name"));
+			ev.setDescription(req.getParameter("desc"));
+			ev.setStartDate(formatter.parse(req.getParameter("startD")));
+			ev.setLocation(req.getParameter("loc"));
+			
+			DatabaseAccess.saveEvent(ev);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		pw.println("<p><a href=\"showcalendar\">Back</a>   <a href=\"index.jsp\">Home</a></p>");
 		
+		
+		
+		resp.sendRedirect("/showcalendar");
 	}
+
 }

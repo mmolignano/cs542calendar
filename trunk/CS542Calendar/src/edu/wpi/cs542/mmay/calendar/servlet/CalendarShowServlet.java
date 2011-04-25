@@ -2,6 +2,7 @@ package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
+import edu.wpi.cs542.mmay.calendar.WeekCalendar;
 import edu.wpi.cs542.mmay.calendar.kinds.Ownership;
 
 @SuppressWarnings("serial")
@@ -29,6 +31,23 @@ public class CalendarShowServlet extends HttpServlet {
 		// force creation if not there already
 		Ownership owner = DatabaseAccess.getOwnershipByUser(user);
 		
+		// Get a list of days of the current week
+		ArrayList<GregorianCalendar> curWeek;
+		if (req.getParameter("forward") != null) {
+			curWeek = WeekCalendar.getNextWeek(stringToCal("" + req.getParameter("forward")));
+		} else if (req.getParameter("backward") != null) {
+			curWeek = WeekCalendar.getPreviousWeek(stringToCal("" + req.getParameter("backward")));
+		} else {
+			curWeek = WeekCalendar.getCurrentWeek();
+		}
+			
+		// Setup today
+		GregorianCalendar today = new GregorianCalendar();
+		int tDay = today.get(GregorianCalendar.DATE);
+		int tMonth = today.get(GregorianCalendar.MONTH);
+		int tYear = today.get(GregorianCalendar.YEAR);
+			
+		
 		resp.setContentType("text/html");
 		PrintWriter pw = resp.getWriter();
 		
@@ -36,8 +55,20 @@ public class CalendarShowServlet extends HttpServlet {
 				userService.createLogoutURL(req.getRequestURI()) + "\">sign out</a>.)</p>");
 		pw.println("<p><a href=\"index.jsp\">Home</a>");
 		
-		
 		pw.print("<h1>My Calendar</h1>");
+		
+		// Add buttons to move forward and backward and show today
+		// Show Today
+		pw.println("<form action=\"showcalendar\" method=\"get\" />");
+		pw.println("<input type=\"submit\" value=\"Today\"></form>");
+		// Move Backward a week
+		pw.println("<form style=\"display: inline\" action=\"showcalendar\" method=\"get\" />");
+		pw.println("<input type=\"hidden\" name=\"backward\" value=\"" + this.getPreviousString(curWeek) + "\" />");
+		pw.println("<input type=\"submit\" value=\"<--\"></form>");
+		// Move Forward a week
+		pw.println("<form style=\"display: inline\" action=\"showcalendar\" method=\"get\" />");
+		pw.println("<input type=\"hidden\" name=\"forward\" value=\"" + this.getNextString(curWeek) + "\" />");
+		pw.println("<input type=\"submit\" value=\"-->\"></form>");
 		
 		
 //		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -74,89 +105,29 @@ public class CalendarShowServlet extends HttpServlet {
 //		
 //		resp.getWriter().println("</table></body></html>");
 		
-//		java.util.Calendar c3 = new GregorianCalendar(2011, 0, 1);
-		GregorianCalendar today = new GregorianCalendar();
-		int tDay = today.get(GregorianCalendar.DATE);
-		int tMonth = today.get(GregorianCalendar.MONTH);
-		int tYear = today.get(GregorianCalendar.YEAR);
-		GregorianCalendar c = new GregorianCalendar();
-		int day = c.get(GregorianCalendar.DATE);
-		int month = c.get(GregorianCalendar.MONTH);
-		int year = c.get(GregorianCalendar.YEAR);
-		int dow = c.get(GregorianCalendar.DAY_OF_WEEK);
-		int maxDay = c.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 		
-//		pw.println("day: " + day + "<br />");
-//		pw.println("month: " + month + "<br />");
-//		pw.println("year: " + year + "<br />");
-//		pw.println("dow: " + dow + "<br />");
-//		pw.println("maxDay: " + maxDay + "<br />");
 		
-		int checkdow = dow;
-		// Get a calendar at first day of week
-		for (int i = checkdow; i > 1; i--) {
-			day = c.get(java.util.Calendar.DATE);
-			month = c.get(java.util.Calendar.MONTH);
-			year = c.get(java.util.Calendar.YEAR);
-			dow = c.get(java.util.Calendar.DAY_OF_WEEK);
-			// First check if first day of month
-			if (day == 1) {
-				// Check to see if first month of year
-				if (month == 0) {
-					// Need to move month to 12 and year back 1
-					c  = new GregorianCalendar(year-1, 11, 31);
-				} else {
-					// Need to move month back and check max day
-					java.util.Calendar temp = new GregorianCalendar(year, month-1, 1);
-					maxDay = temp.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-					c = new GregorianCalendar(year, month-1, maxDay);
-				}
-			} else {
-				// Just move day back
-				c = new GregorianCalendar(year, month, day-1);
-			}
-		}
+		
 		
 		pw.println();
 		
-		int begYear = c.get(GregorianCalendar.YEAR);
-		int begMonth = c.get(GregorianCalendar.MONTH);
-		int begDay = c.get(GregorianCalendar.DATE);
-		GregorianCalendar c3 = new GregorianCalendar(begYear, begMonth, begDay);
 		
 		// Create the top (days of the week)
 		pw.println("<TABLE width=\"100%\" border=1 bordercolordark=\"#000000\" bordercolorlight=\"#FFFFFF\" cellpadding=\"5\"><TBODY><TR>");
 		
 		// Print out the 7 days of the week (SUN-SAT, day month year)
-		for (int i = 1; i <=7; i++) {
-			day = c3.get(java.util.Calendar.DATE);
-			month = c3.get(java.util.Calendar.MONTH);
-			year = c3.get(java.util.Calendar.YEAR);
-			maxDay = c3.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+		for (GregorianCalendar c3 : curWeek) {
+			int day = c3.get(java.util.Calendar.DATE);
+			int month = c3.get(java.util.Calendar.MONTH);
+			int year = c3.get(java.util.Calendar.YEAR);
 			
 			// Print this day
 			if (day == tDay && month == tMonth && year == tYear) {
 				pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#00A0F0\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">" +
-						getDayName(i) + " " + (month+1) + "/" + day + "</font></TH>");
+						getDayName(c3.get(GregorianCalendar.DAY_OF_WEEK)) + " " + (month+1) + "/" + day + "</font></TH>");
 			} else {
 				pw.println("<TH valign=center align=middle width=\"14%\" bgcolor=\"#000000\"><font size=\"1\" color=\"#FFFFFF\" face=\"Verdana\">" +
-						getDayName(i) + " " + (month+1) + "/" + day + "</font></TH>");
-			}
-			
-			// Move to next day
-			// First check to see if last day in month
-			if (day == maxDay) {
-				// Check to see if last month of year
-				if (month == 11) {
-					// Need to move month to 1 and year forward 1
-					c3  = new GregorianCalendar(year+1, 0, 1);
-				} else {
-					// Need to move month forward and set day 1
-					c3 = new GregorianCalendar(year, month+1, 1);
-				}
-			} else {
-				// Just move day back
-				c3 = new GregorianCalendar(year, month, day+1);
+						getDayName(c3.get(GregorianCalendar.DAY_OF_WEEK)) + " " + (month+1) + "/" + day + "</font></TH>");
 			}
 		}
 		
@@ -170,34 +141,34 @@ public class CalendarShowServlet extends HttpServlet {
 //		pw.println("<TD vAlign=top align=left width=\"14%\" ><font size=\"3\" face=\"Verdana\">3</font><br><br><br><br></TD></tr></TABLE>");
 		
 		
-		c3 = new GregorianCalendar(begYear, begMonth, begDay);
-		
-		// Print out the events of the 7 days of the week (SUN-SAT)
-		for (int i = 1; i <=7; i++) {
-			day = c3.get(java.util.Calendar.DATE);
-			month = c3.get(java.util.Calendar.MONTH);
-			year = c3.get(java.util.Calendar.YEAR);
-			maxDay = c3.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-			// First print this day
-//			pw.println("Day: " + day + "\tMonth: " + (month+1) + "\tYear: " + year + "<br />");
-			// PRINT OUT ALL THE EVENTS OF THIS DAY
-			
-			// Move to next day
-			// First check to see if last day in month
-			if (day == maxDay) {
-				// Check to see if last month of year
-				if (month == 11) {
-					// Need to move month to 1 and year forward 1
-					c3  = new GregorianCalendar(year+1, 0, 1);
-				} else {
-					// Need to move month forward and set day 1
-					c3 = new GregorianCalendar(year, month+1, 1);
-				}
-			} else {
-				// Just move day back
-				c3 = new GregorianCalendar(year, month, day+1);
-			}
-		}
+//		c3 = new GregorianCalendar(begYear, begMonth, begDay);
+//		
+//		// Print out the events of the 7 days of the week (SUN-SAT)
+//		for (int i = 1; i <=7; i++) {
+//			day = c3.get(java.util.Calendar.DATE);
+//			month = c3.get(java.util.Calendar.MONTH);
+//			year = c3.get(java.util.Calendar.YEAR);
+//			maxDay = c3.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+//			// First print this day
+////			pw.println("Day: " + day + "\tMonth: " + (month+1) + "\tYear: " + year + "<br />");
+//			// PRINT OUT ALL THE EVENTS OF THIS DAY
+//			
+//			// Move to next day
+//			// First check to see if last day in month
+//			if (day == maxDay) {
+//				// Check to see if last month of year
+//				if (month == 11) {
+//					// Need to move month to 1 and year forward 1
+//					c3  = new GregorianCalendar(year+1, 0, 1);
+//				} else {
+//					// Need to move month forward and set day 1
+//					c3 = new GregorianCalendar(year, month+1, 1);
+//				}
+//			} else {
+//				// Just move day back
+//				c3 = new GregorianCalendar(year, month, day+1);
+//			}
+//		}
 	}
 	
 	private String getDayName(int mon) {
@@ -219,6 +190,23 @@ public class CalendarShowServlet extends HttpServlet {
 			default:
 				return "";
 		}
+	}
+	
+	private String getPreviousString(ArrayList<GregorianCalendar> cals) {
+		GregorianCalendar c = cals.get(0);
+		String sunday = c.get(GregorianCalendar.YEAR) + "/" + (c.get(GregorianCalendar.MONTH) + 1) + "/" + c.get(GregorianCalendar.DATE); 
+		return sunday;
+	}
+	
+	private String getNextString(ArrayList<GregorianCalendar> cals) {
+		GregorianCalendar c = cals.get(6);
+		String sunday = c.get(GregorianCalendar.YEAR) + "/" + (c.get(GregorianCalendar.MONTH) + 1) + "/" + c.get(GregorianCalendar.DATE); 
+		return sunday;
+	}
+	
+	private GregorianCalendar stringToCal(String day) {
+		String [] s = day.split("/");
+		return new GregorianCalendar(new Integer(s[0]), new Integer(s[1]) - 1, new Integer(s[2]));
 	}
 	
 }

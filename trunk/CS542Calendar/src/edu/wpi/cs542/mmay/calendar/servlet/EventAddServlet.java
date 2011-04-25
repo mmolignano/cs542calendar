@@ -52,11 +52,11 @@ public class EventAddServlet extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 		
 		if (success) {
-			pw.println("Added the following event:");
-			pw.println(ev.getEventName());
-			pw.println(formatter.format(ev.getStartDate()));
-			pw.println(ev.getLocation());
-			pw.println(ev.getDescription());
+			pw.println("Added the following event:<br />");
+			pw.println("Name: " + ev.getEventName()+ "<br />");
+			pw.println("Date: " + formatter.format(ev.getStartDate())+ "<br />");
+			pw.println("Location: " + ev.getLocation()+ "<br />");
+			pw.println("Description: " + ev.getDescription()+ "<br />");
 		} else {
 			pw.println("Add Unsuccessful");
 		}

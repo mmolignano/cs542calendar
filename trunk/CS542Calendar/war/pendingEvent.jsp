@@ -59,7 +59,7 @@
 							<input type="hidden" name="name" value="<%= ev.getEventName() %>" />
 							<input type="hidden" name="add" value="false" />
 							<input type="submit" value="Remove Event" />
-						</form><br>
+						</form><br />
 					</td>
 				</tr>
 <%

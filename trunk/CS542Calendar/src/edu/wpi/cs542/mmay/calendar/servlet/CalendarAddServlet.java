@@ -44,10 +44,10 @@ public class CalendarAddServlet extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 		
 		if (success) {
-			pw.println("Added Calendar:\n");
-			pw.println("Calendar Name: " + calendar.getName());
-			pw.println("Calendar Owner: " + calendar.getOwners());
-			pw.println("Calendar Description: " + calendar.getDescription());
+			pw.println("Added Calendar:<br />");
+			pw.println("Calendar Name: " + calendar.getName() + "<br />");
+			pw.println("Calendar Owner: " + calendar.getOwners() + "<br />");
+			pw.println("Calendar Description: " + calendar.getDescription() + "<br />");
 			
 		} else {
 			pw.println("Add Unsuccessful");

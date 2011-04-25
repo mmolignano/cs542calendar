@@ -1,5 +1,7 @@
 package edu.wpi.cs542.mmay.calendar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Collection;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
 
 import javax.jdo.*;
 
@@ -47,17 +50,16 @@ public class DatabaseAccess {
 	}
 	
 	public static boolean addNewEventToCalendar(Event ev, Key calKey) {
-		boolean returner = true;
+		boolean returner = addEvent(ev);
+		
 		
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Calendar c = pm.getObjectById(Calendar.class, calKey);
 		Transaction tx = pm.currentTransaction();
 		
 		try {	
 			tx.begin();
-			pm.makePersistent(ev);
-			Calendar c = getCalendar(calKey);
 			c.addEvent(ev);
-			pm.makePersistent(c);
 			tx.commit();
 		} catch (Exception e) {
 		} finally {
@@ -344,14 +346,35 @@ public class DatabaseAccess {
 		return new Calendar(calName, user);
 	}
 	
-	public static ArrayList<Event> getEventsByUserAndDate(String nick, GregorianCalendar cal) {
-		ArrayList<Event> returner = new ArrayList<Event>();
+	public static Collection<Event> getEventsByUserAndDate(String nick, GregorianCalendar cal) {
+		//ArrayList<Event> returner = new ArrayList<Event>();
 		int year = cal.get(GregorianCalendar.YEAR);
 		int month = cal.get(GregorianCalendar.MONTH);	// Need to add 1 because function returns 0-11
 		int day = cal.get(GregorianCalendar.DATE);
 		
-		// Get all events by all calendars of this user on given day
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		StringBuilder dateString = new StringBuilder();
+		month++;
+		if (month < 10) {
+			dateString.append("0");
+		}
+		dateString.append(month + "/");
+		dateString.append(day + "/" + year);
 		
+		Date date = new Date();
+		try {
+			date = formatter.parse(dateString.toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Query query = pm.newQuery(pm.getExtent(Event.class));
+		// Get all events by all calendars of this user on given day
+		Collection<Event> returner = (Collection<Event>)(query.execute());
+		//return returner;
+		pm.close();
 		return returner;
 	}
 	

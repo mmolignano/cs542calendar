@@ -1,8 +1,12 @@
 package edu.wpi.cs542.mmay.calendar.kinds;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -11,7 +15,9 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 
-@PersistenceCapable
+import edu.wpi.cs542.mmay.calendar.DatabaseAccess;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class Ownership {
 
 	@PrimaryKey
@@ -22,34 +28,28 @@ public class Ownership {
 	private User account;
 	
 	@Persistent
-	private List<Calendar> ownedCalendars;
+	private Set<Key> ownedCalendars;
 	
 	@Persistent
-	private PendingCalendar pendingCalendars;
-	//private List<Calendar> pendingCalendars;
+	private Set<Key> pendingCalendars;
 		
 	@Persistent
-	private PendingEvent pendingEvents;
-	//private List<Event> pendingEvents;
+	private Set<Key> pendingEvents;
 	
 	public Ownership() {
 		this.nickname = "";
 		this.account = new User("","");
-		this.ownedCalendars = new LinkedList<Calendar>();
-		//this.pendingCalendars = new LinkedList<Calendar>();
-		this.pendingCalendars = new PendingCalendar();
-		//this.pendingEvents = new LinkedList<Event>();
-		this.pendingEvents = new PendingEvent();
+		this.ownedCalendars = new HashSet<Key>();
+		this.pendingCalendars = new HashSet<Key>();
+		this.pendingEvents = new HashSet<Key>();
 	}
 	
 	public Ownership(User account) {
 		this.nickname = account.getNickname();
 		this.account = account;
-		this.ownedCalendars = new LinkedList<Calendar>();
-		//this.pendingCalendars = new LinkedList<Calendar>();
-		this.pendingCalendars = new PendingCalendar(account);
-		//this.pendingEvents = new LinkedList<Event>();
-		this.pendingEvents = new PendingEvent(account);
+		this.ownedCalendars = new HashSet<Key>();
+		this.pendingCalendars = new HashSet<Key>();
+		this.pendingEvents = new HashSet<Key>();
 	}
 	
 	
@@ -70,70 +70,50 @@ public class Ownership {
 	}
 	
 	public void addOwnedCalendar(Calendar calendar) {
-		ownedCalendars.add(calendar);
+		ownedCalendars.add(calendar.getId());
 	}
-	
+		
 	public void removeOwnedCalendar(Key calendarKey) {
-		for (Calendar calendar : ownedCalendars) {
-			if (calendar.getId().equals(calendarKey)) {
-				ownedCalendars.remove(calendar);
-				break;
-			}
-		}
+		ownedCalendars.remove(calendarKey);
+	}
+
+	public void addOwnedCalendar(Key calendarKey) {
+		ownedCalendars.add(calendarKey);
 	}
 	
-	public List<Calendar> getOwnedCalendars() {
+	public Set<Key> getOwnedCalendars() {
 		return ownedCalendars;
 	}
 	
 	public void addPendingCalendar(Calendar calendar) {
-		pendingCalendars.addPendingCalendar(calendar);
+		pendingCalendars.add(calendar.getId());
+	}
+	
+	public void addPendingCalendar(Key calendarKey) {
+		pendingCalendars.add(calendarKey);
 	}
 	
 	public void removePendingCalendar(Key calendarKey) {
-		/*for (Calendar calendar : pendingCalendars) {
-			if (calendar.getId().equals(calendarKey)) {
-				pendingCalendars.remove(calendar);
-				break;
-			}
-		}*/
-		pendingCalendars.removePendingCalendar(calendarKey);
+		pendingCalendars.remove(calendarKey);
 	}
 	
-	/*public List<Calendar> getPendingCalendars() {
-		return pendingCalendars;
-	}*/
-	public PendingCalendar getPendingCalendarKind() {
+	public Set<Key> getPendingCalendarKeySet() {
 		return pendingCalendars;
 	}
 	
-	public List<Calendar> getPendingCalendarList() {
-		return pendingCalendars.getPendingCalendars();
+	public Collection<Calendar> getPendingCalendars() {
+		return DatabaseAccess.getCalendars(getPendingCalendarKeySet());
 	}
 	
 	public void addPendingEvent(Event event) {
-		pendingEvents.addPendingEvent(event);
+		pendingEvents.add(event.getId());
 	}
 	
 	public void removePendingEvent(Key eventKey) {
-		/*for (Event event : pendingEvents) {
-			if (event.getId().equals(eventKey)) {
-				pendingEvents.remove(event);
-				break;
-			}
-		}*/
-		pendingEvents.removePendingEvent(eventKey);
+		pendingEvents.remove(eventKey);
 	}
 	
-	/*public List<Event> getPendingEvents() {
+	public Set<Key> getPendingEventSet() {
 		return pendingEvents;
-	}*/
-	
-	public PendingEvent getPendingEventsKind() {
-		return pendingEvents;
-	}
-	
-	public List<Event> getPendingEventsList() {
-		return pendingEvents.getPendingEvents();
 	}
 }

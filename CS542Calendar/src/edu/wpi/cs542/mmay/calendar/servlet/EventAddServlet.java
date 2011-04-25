@@ -61,7 +61,7 @@ public class EventAddServlet extends HttpServlet {
 			pw.println("Add Unsuccessful");
 		}
 		
-		pw.println("<p><a href=\"listEvent\">Events</a>   <a href=\"index.jsp\">Home</a></p>");
+		pw.println("<p><a href=\"newEvent.jsp\">Add another Event</a>   <a href=\"index.jsp\">Home</a></p>");
 		//resp.sendRedirect("/listEvent");
 	}
 }

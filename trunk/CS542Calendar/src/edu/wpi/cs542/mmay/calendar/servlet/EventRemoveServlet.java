@@ -1,6 +1,7 @@
 package edu.wpi.cs542.mmay.calendar.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -35,8 +36,21 @@ public class EventRemoveServlet extends HttpServlet {
 		Key calKey = KeyFactory.createKey(evId.substring(0, calId.indexOf('(')), new Long(calId.substring(calId.indexOf('(') + 1, calId.indexOf(')'))));*/
 		
 		//DatabaseAccess.removeEventFromCalendar(calKey, evKey);
+		resp.setContentType("text/html");
+
 		DatabaseAccess.removeEvent(evKey);
+
+		//PrintWriter pw = resp.getWriter();
 		
+		/*if (success) {
+			pw.println("Added the following event:<br />");
+			pw.println("Name: " + ev.getEventName()+ "<br />");
+			pw.println("Date: " + formatter.format(ev.getStartDate())+ "<br />");
+			pw.println("Location: " + ev.getLocation()+ "<br />");
+			pw.println("Description: " + ev.getDescription()+ "<br />");
+		} else {
+			pw.println("Add Unsuccessful");
+		}*/
 		
 		resp.sendRedirect("/showcalendar");
 	}

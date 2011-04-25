@@ -79,76 +79,88 @@ public class DatabaseAccess {
 	}
 	
 	public static boolean removeEvent(Key evKey) {
-		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		Event event = pm.getObjectById(Event.class, evKey);
-		Transaction tx = pm.currentTransaction();
+		boolean success = true;
+		success &= removeEventFromCalendars(evKey);
+		success &= removeEventFromPending(evKey);
 		
-		try {
-			tx.begin();
-			pm.deletePersistent(event);
-			tx.commit();
-		} catch (Exception e) {
+		if (success) {
+			PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+			Event event = pm.getObjectById(Event.class, evKey);
+			Transaction tx = pm.currentTransaction();
+		
+			try {
+				tx.begin();
+				pm.deletePersistent(event);
+				tx.commit();
+			} catch (Exception e) {
 			
-		} finally {
-			if (tx.isActive()){
-				tx.rollback();
+			} finally {
+				if (tx.isActive()){
+					tx.rollback();
+					success = false;
+				}
+				pm.close();
 			}
-			pm.close();
 		}
 		
-		removeEventFromCalendars(evKey);
-		removeEventFromPending(evKey);
-		
-		return true;
+		return success;
 	}
 	
 	public static boolean removeEventFromCalendars(Key evKey) {
+		boolean success = true;
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Collection<Calendar> calendars = fetchAllCalendars();
 		Transaction tx = pm.currentTransaction();
 		
 		try {
-			tx.begin();
+			
 			for (Calendar cal : calendars) {
+				tx.begin();
 				cal.removeEvent(evKey);
 				pm.makePersistent(cal);
+				tx.commit();
 			}
-			tx.commit();
+			
 		} catch (Exception e) {
 			
 		} finally {
 			if (tx.isActive()){
 				tx.rollback();
+				success = false;
 			}
 			pm.close();
 		}
-		return true;
+		return success;
 	}
 	
 	public static boolean removeEventFromPending(Key evKey) {
+		boolean success = true;
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
 		Extent<Ownership> owners = pm.getExtent(Ownership.class);
 		Transaction tx = pm.currentTransaction();
 
 		
 		try {
-			tx.begin();
+			
 			Iterator<Ownership> iterator = owners.iterator();
 			while (iterator.hasNext()){
+				tx.begin();
 				Ownership owner = iterator.next();
 				owner.removePendingEvent(evKey);
 				pm.makePersistent(owner);
+				tx.commit();
 			}
-			tx.commit();
+			
 		} catch (Exception e) {
 			
 		} finally {
 			if (tx.isActive()){
 				tx.rollback();
+				success = false;
 			}
 			pm.close();
 		}
-		return true;
+		return success;
 	}
 	
 	public static boolean removeEventFromCalendar(Key calKey, Key evKey) {
